@@ -1,6 +1,8 @@
 namespace dungeonRPG.Dungeon;
 
 using Cells;
+using Entities;
+
 
 public class Room
 {
