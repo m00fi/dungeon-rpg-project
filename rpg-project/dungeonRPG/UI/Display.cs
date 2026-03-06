@@ -4,7 +4,7 @@ using Dungeon;
 
 public class Display
 {
-    public void RenderDungeon(Room room)
+    public void Render(Room room)
     {
         Console.SetCursorPosition(0, 0);
         // Console.BackgroundColor = ConsoleColor.Black;

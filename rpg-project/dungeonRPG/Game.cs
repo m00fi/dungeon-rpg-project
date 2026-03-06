@@ -18,8 +18,15 @@ public class Game
         Console.CursorVisible = false;
         Console.Clear();
 
-        _display.RenderDungeon(_room);
-
-        Console.ReadKey();
+        try
+        {
+            _display.Render(_room);
+            Console.ReadKey();
+        }
+        finally
+        {
+            Console.CursorVisible = true; // zawsze przywróć kursor
+            Console.Clear();
+        }
     }
 }
