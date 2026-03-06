@@ -27,16 +27,16 @@ public class Game
         {
             while (true)
             {
-                _display.Render(_room);
+                _display.Render(_room, _player);
 
                 var key = Console.ReadKey(intercept: true).Key;
 
                 switch (key)
                 {
-                    case ConsoleKey.W: break;
-                    case ConsoleKey.S: break;
-                    case ConsoleKey.A: break;
-                    case ConsoleKey.D: break;
+                    case ConsoleKey.W: _player.TryMove(0, -1, _room); break;
+                    case ConsoleKey.S: _player.TryMove(0, 1, _room); break;
+                    case ConsoleKey.A: _player.TryMove(-1, 0, _room); break;
+                    case ConsoleKey.D: _player.TryMove(1, 0, _room); break;
                     case ConsoleKey.Escape: return;
                 }
             }
