@@ -1,1 +1,4 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using dungeonRPG;
+
+var game = new Game();
+game.Run();

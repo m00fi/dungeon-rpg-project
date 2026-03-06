@@ -8,10 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Dungeon\" />
       <Folder Include="Entities\" />
       <Folder Include="Items\" />
-      <Folder Include="UI\" />
     </ItemGroup>
 
 </Project>
