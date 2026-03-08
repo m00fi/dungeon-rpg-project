@@ -35,6 +35,7 @@ public class Room
             if (y != 15 && y != 16) 
             {
                 _grid[y, 15] = new WallCell();
+                _grid[y, 16] = new WallCell();
             }
         }
         
@@ -56,6 +57,7 @@ public class Room
 
         for (int y = 12; y < Height; y++)
         {
+            _grid[y, 7] = new WallCell();
             _grid[y, 8] = new WallCell();
         }
         
@@ -70,8 +72,9 @@ public class Room
         _grid[15, 31].AddItem(new Gold());
         _grid[14, 32].AddItem(new Gold());
         
-        _grid[10, 20].AddItem(new HealthPotion());
-        
+        _grid[10, 22].AddItem(new Quiver());
+        _grid[4, 25].AddItem(new Fireball());
+        _grid[5, 23].AddItem(new Greatbow());
     }
 
     public Cell GetCell(int x, int y)

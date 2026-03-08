@@ -13,4 +13,8 @@ public abstract class Weapon : IItem
     {
         player.inventory.Add(this);
     }
+    public virtual string GetDescription()
+    {
+        return $"({Symbol}) {Name} (Damage: {Damage})";
+    }
 }

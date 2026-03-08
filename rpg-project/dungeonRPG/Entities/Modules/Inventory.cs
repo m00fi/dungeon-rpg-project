@@ -8,4 +8,9 @@ public class Inventory
     
     public void Add(IItem item) => Items.Add(item);
     public void Remove(IItem item) => Items.Remove(item);
+
+    public List<string> GetInventory()
+    {
+        return Items.Select((item, index) => $"{index + 1}. {item.GetDescription()}").ToList();
+    }
 }

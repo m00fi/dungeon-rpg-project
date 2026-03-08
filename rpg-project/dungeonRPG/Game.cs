@@ -15,7 +15,7 @@ public class Game
     {
         _room = new Room();
         _display = new Display();
-        _player = new Player(0, 0);
+        _player = new Player("m0fi",0, 0);
     }
 
     public void Run()

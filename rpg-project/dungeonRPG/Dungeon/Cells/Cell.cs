@@ -13,4 +13,9 @@ public abstract class Cell
     {
         return null;
     }
+
+    public virtual string? GetTopItemName()
+    {
+        return null;
+    }
 }

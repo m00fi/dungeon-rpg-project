@@ -8,4 +8,5 @@ public interface IItem
     string Name { get; }
     
     void PickUp(Player player);
+    string GetDescription();
 }

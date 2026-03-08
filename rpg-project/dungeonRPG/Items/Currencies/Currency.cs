@@ -8,4 +8,8 @@ public abstract class Currency : IItem
     public abstract string Name { get; }
 
     public abstract void PickUp(Player player);
+    public virtual string GetDescription()
+    {
+        return $"({Symbol}) {Name}";
+    }
 }

@@ -7,4 +7,9 @@ public class Money
 
     public void AddCoins(int amount) => Coins += amount;
     public void AddGold(int amount) => Gold += amount;
+
+    public string GetMoney()
+    {
+        return $"Coins: {Coins}, Gold: {Gold}";
+    }
 }

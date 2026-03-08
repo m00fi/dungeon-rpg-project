@@ -10,4 +10,8 @@ public abstract class Other : IItem
     {
         player.inventory.Add(this);
     }
+    public virtual string GetDescription()
+    {
+        return $"({Symbol}) {Name}";
+    }
 }

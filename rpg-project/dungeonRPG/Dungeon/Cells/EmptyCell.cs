@@ -23,4 +23,9 @@ public class EmptyCell : Cell
         Items.RemoveAt(Items.Count - 1);
         return item;
     }
+    public override string? GetTopItemName()
+    {
+        if(Items.Count == 0) return null;
+        return Items.Last().GetDescription();
+    }
 }

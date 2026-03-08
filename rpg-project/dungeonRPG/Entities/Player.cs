@@ -7,6 +7,7 @@ using Modules;
 
 public class Player
 {
+    public string Name { get; private set; }
     public int X;
     public int Y;
     
@@ -14,8 +15,9 @@ public class Player
     public Inventory inventory = new Inventory();
     public Money money = new Money();
 
-    public Player(int startX, int startY)
+    public Player(string name, int startX, int startY)
     {
+        Name = name;
         X = startX;
         Y = startY;
     }
