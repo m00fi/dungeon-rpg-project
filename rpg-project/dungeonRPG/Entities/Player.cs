@@ -1,11 +1,18 @@
+using dungeonRPG.Items;
+
 namespace dungeonRPG.Entities;
 using Dungeon;
 using Dungeon.Cells;
+using Modules;
 
 public class Player
 {
     public int X;
     public int Y;
+    
+    public Attribute stats = new Attribute();
+    public Inventory inventory = new Inventory();
+    public Money money = new Money();
 
     public Player(int startX, int startY)
     {
@@ -31,6 +38,16 @@ public class Player
         {
             X = targetX;
             Y = targetY;
+        }
+    }
+
+    public void TryPickUp(Room room)
+    {
+        Cell currCell = room.GetCell(X, Y);
+        IItem? item = currCell.PopItem();
+        if (item != null)
+        {
+            item.PickUp(this);
         }
     }
 }

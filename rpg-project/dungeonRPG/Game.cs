@@ -38,6 +38,7 @@ public class Game
                     case ConsoleKey.A: _player.TryMove(-1, 0, _room); break;
                     case ConsoleKey.D: _player.TryMove(1, 0, _room); break;
                     case ConsoleKey.Escape: return;
+                    case ConsoleKey.E: _player.TryPickUp(_room); break;
                 }
             }
         }

@@ -7,5 +7,5 @@ public abstract class Currency : IItem
     public abstract char Symbol { get; }
     public abstract string Name { get; }
 
-    public virtual void PickUp(Player player){}
+    public abstract void PickUp(Player player);
 }
