@@ -1,8 +1,9 @@
-using dungeonRPG.Items.Weapons;
-
 namespace dungeonRPG.Dungeon;
 
 using Cells;
+using Items.Currencies;
+using Items.Weapons;
+using dungeonRPG.Items.Others;
 using Entities;
 
 
@@ -58,7 +59,19 @@ public class Room
             _grid[y, 8] = new WallCell();
         }
         
-        _grid[2,2].AddItem(new Greataxe());
+        _grid[2,2].AddItem(new Staff());
+        _grid[2, 2].AddItem(new Greataxe());
+        _grid[9,10].AddItem(new Staff());
+        _grid[8, 13].AddItem(new Spear());
+
+        _grid[3, 4].AddItem(new Gold());
+        _grid[18, 33].AddItem(new Coin());
+        _grid[17, 33].AddItem(new Coin());
+        _grid[15, 31].AddItem(new Gold());
+        _grid[14, 32].AddItem(new Gold());
+        
+        _grid[10, 20].AddItem(new HealthPotion());
+        
     }
 
     public Cell GetCell(int x, int y)
