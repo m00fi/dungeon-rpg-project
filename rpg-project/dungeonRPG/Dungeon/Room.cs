@@ -1,3 +1,5 @@
+using dungeonRPG.Items.Weapons;
+
 namespace dungeonRPG.Dungeon;
 
 using Cells;
@@ -20,31 +22,43 @@ public class Room
     private void Initialize()
     {
         for (int y = 0; y < Height; y++)
-        for (int x = 0; x < Width; x++)
-            _grid[y, x] = new EmptyCell();
-        
-        for (int x = 0; x < Width - 17; x++)
         {
-            _grid[5, x] = new WallCell();
-            //_grid[Height - 1, x] = new WallCell();
+            for (int x = 0; x < Width; x++)
+            {
+                _grid[y, x] = new EmptyCell();
+            }
+        }
+
+        for (int y = 0; y < Height; y++)
+        {
+            if (y != 15 && y != 16) 
+            {
+                _grid[y, 15] = new WallCell();
+            }
         }
         
-        for (int x = 14; x < Width; x++)
+        for (int x = 15; x < Width; x++)
         {
-            _grid[17, x] = new WallCell();
-            //_grid[Height - 1, x] = new WallCell();
-        }
-        for (int y = 5; y < Height - 4; y++)
-        {
-            _grid[y, 14] = new WallCell();
-            //_grid[y, Width - 1] = new WallCell();
+            if (x < 28 || x > 30)
+            {
+                _grid[9, x] = new WallCell();
+            }
         }
         
-        for (int y = 13; y < Height; y++)
+        for (int x = 0; x < 8; x++)
         {
-            _grid[y, Width - 1] = new WallCell();
-            //_grid[y, Width - 1] = new WallCell();
+            if (x != 3 && x != 4)
+            {
+                _grid[12, x] = new WallCell();
+            }
         }
+
+        for (int y = 12; y < Height; y++)
+        {
+            _grid[y, 8] = new WallCell();
+        }
+        
+        _grid[2,2].AddItem(new Greataxe());
     }
 
     public Cell GetCell(int x, int y)
