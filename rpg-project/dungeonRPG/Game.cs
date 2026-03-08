@@ -18,6 +18,32 @@ public class Game
         _player = new Player("m0fi",0, 0);
     }
 
+    public void Menu()
+    {
+        Console.CursorVisible = false;
+        Console.Clear();
+        string logo = """
+                      ________                                            
+                      \______ \  __ __  ____    ____   ____  ____    ____  
+                       |    |  \|  |  \/    \  / ___\_/ __ \/  _ \ /    \ 
+                       |    `   \  |  /   |  \/ /_/  >  ___(  <_> )   |  \
+                      /_______  /____/|___|  /\___  / \___  >____/|___|  /
+                              \/           \//_____/      \/           \/ 
+                      """;
+
+        Console.WriteLine(logo);
+        Console.WriteLine("Controls:");
+        Console.WriteLine("[WASD] - Move");
+        Console.WriteLine("[E] - Pick up item");
+        Console.WriteLine("[Q] - Drop item");
+        Console.WriteLine("[I] - Manage inventory");
+        Console.WriteLine("[H] - Help");
+        Console.WriteLine("[ESC] - Exit game");
+        Console.WriteLine();
+        Console.WriteLine("Press any key to start...");
+        Console.ReadKey(intercept: true);
+    }
+
     public void Run()
     {
         Console.CursorVisible = false;

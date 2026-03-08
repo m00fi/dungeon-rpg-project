@@ -83,6 +83,7 @@ public class Display
         
         panel.Add(Separator());
 
+        //TO DO: implement equipment system and display equipped items here
         panel.Add("Left hand: ~empty");
         panel.Add("Right hand: ~empty");
         panel.Add(Separator());
@@ -90,19 +91,11 @@ public class Display
         panel.Add("Inventory:");
         panel.AddRange(player.inventory.GetInventory());
         panel.Add(Separator());
-        panel.Add("Available actions:");
+        panel.Add("Available items to pick up:");
         
         Cell currentCell = room.GetCell(player.X, player.Y);
-        string? itemNameOnGround = currentCell.GetTopItemName();
-        if (player.inventory.Items.Count != 0)
-        {
-            panel.Add($"[I] Manage Inventory");
-        }
-        
-        if (!string.IsNullOrEmpty(itemNameOnGround))
-        {
-            panel.Add($"[E] Pick-up: {itemNameOnGround}");
-        }
+        panel.AddRange(currentCell.GetItemDescriptions());
+
         panel.Add(Separator());
         panel.Add($"X{player.X},Y{player.Y}");
         return panel;

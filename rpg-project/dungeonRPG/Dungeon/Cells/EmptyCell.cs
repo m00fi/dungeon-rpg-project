@@ -28,4 +28,9 @@ public class EmptyCell : Cell
         if(Items.Count == 0) return null;
         return Items.Last().GetDescription();
     }
+
+    public override List<string> GetItemDescriptions()
+    {
+        return Items.Select((item, index) => $"{index + 1}. {item.GetDescription()}").ToList();
+    }
 }

@@ -7,15 +7,12 @@ public abstract class Cell
 {
     public abstract char GetSymbol();
     public abstract bool Enter(Player player);
-    public virtual void AddItem(IItem item){}
 
-    public virtual IItem? PopItem()
+    public virtual void AddItem(IItem item)
     {
-        return null;
     }
 
-    public virtual string? GetTopItemName()
-    {
-        return null;
-    }
+    public virtual IItem? PopItem() => null;
+    public virtual string? GetTopItemName() => null;
+    public virtual List<string> GetItemDescriptions() => new List<string>();
 }
