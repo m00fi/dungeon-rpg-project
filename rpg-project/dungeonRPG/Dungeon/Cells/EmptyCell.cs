@@ -10,7 +10,7 @@ public class EmptyCell : Cell
         if (Items.Count == 0)
             return ' ';
 
-        return Items.Last().Symbol;
+        return Items.First().Symbol;
     }
 
     public override bool Enter(Player player) => true;
@@ -32,5 +32,16 @@ public class EmptyCell : Cell
     public override List<string> GetItemDescriptions()
     {
         return Items.Select((item, index) => $"{index + 1}. {item.GetDescription()}").ToList();
+    }
+    
+    public override int GetItemsCount() => Items.Count;
+
+    public override IItem? PopItemAt(int index)
+    {
+        if (index < 0 || index >= Items.Count) return null;
+    
+        var item = Items[index];
+        Items.RemoveAt(index);
+        return item;
     }
 }

@@ -18,34 +18,15 @@ public class Game
         _player = new Player("m0fi",0, 0);
     }
 
-    public void Menu()
+    public Game(string heroName)
     {
-        Console.CursorVisible = false;
-        Console.Clear();
-        string logo = """
-                      ________                                            
-                      \______ \  __ __  ____    ____   ____  ____    ____  
-                       |    |  \|  |  \/    \  / ___\_/ __ \/  _ \ /    \ 
-                       |    `   \  |  /   |  \/ /_/  >  ___(  <_> )   |  \
-                      /_______  /____/|___|  /\___  / \___  >____/|___|  /
-                              \/           \//_____/      \/           \/ 
-                      """;
-
-        Console.WriteLine(logo);
-        Console.WriteLine("Controls:");
-        Console.WriteLine("[WASD] - Move");
-        Console.WriteLine("[E] - Pick up item");
-        Console.WriteLine("[Q] - Drop item");
-        Console.WriteLine("[I] - Manage inventory");
-        Console.WriteLine("[H] - Help");
-        Console.WriteLine("[ESC] - Exit game");
-        Console.WriteLine();
-        Console.WriteLine("Press any key to start...");
-        Console.ReadKey(intercept: true);
+        _room = new Room();
+        _display = new Display();
+        _player = new Player(heroName,0, 0);
     }
 
     public void Run()
-    {
+    {   
         Console.CursorVisible = false;
         Console.Clear();
 
@@ -63,8 +44,16 @@ public class Game
                     case ConsoleKey.S: _player.TryMove(0, 1, _room); break;
                     case ConsoleKey.A: _player.TryMove(-1, 0, _room); break;
                     case ConsoleKey.D: _player.TryMove(1, 0, _room); break;
-                    case ConsoleKey.Escape: return;
+                    
                     case ConsoleKey.E: _player.TryPickUp(_room); break;
+                    case ConsoleKey.Q: _player.TryDropItem(_room); break;
+                    case ConsoleKey.I: _player.ToggleInventory(); break;
+                    case ConsoleKey.T: _player.TryUseItem(_room); break;
+                    
+                    case ConsoleKey.UpArrow: _player.SelectPreviousItem(); break;
+                    case ConsoleKey.DownArrow: _player.SelectNextItem(_room); break;
+                    
+                    case ConsoleKey.Escape: return;
                 }
             }
         }

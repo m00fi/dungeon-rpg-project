@@ -1,3 +1,5 @@
+using dungeonRPG.Dungeon;
+
 namespace dungeonRPG.Items.Others;
 using dungeonRPG.Entities;
 
@@ -8,7 +10,10 @@ public abstract class Other : IItem
 
     public virtual void PickUp(Player player)
     {
-        player.inventory.Add(this);
+        player.inventory.TryAdd(this);
+    }
+    public virtual void Use(Player player, Room room)
+    {
     }
     public virtual string GetDescription()
     {
