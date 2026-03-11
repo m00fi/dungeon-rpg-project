@@ -9,6 +9,7 @@ public abstract class Currency : IItem
     public abstract int Value { get; }
     public abstract char Symbol { get; }
     public abstract string Name { get; }
+    public virtual bool IsInventoryItem { get; } = false;
 
     public abstract void PickUp(Player player);
 

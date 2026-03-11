@@ -56,11 +56,12 @@ public class Player
 
     public void TryPickUp(Room room)
     {
-        if(inventory.IsFullInventory()) 
-            return;
-        
         Cell currCell = room.GetCell(X, Y);
-        IItem? item = currCell.PopItemAt(SelectedItemIndex);
+        IItem? item = currCell.GetItemAt(SelectedItemIndex);
+        if(item == null || (item.IsInventoryItem && inventory.IsFullInventory())) 
+            return;
+
+        item = currCell.PopItemAt(SelectedItemIndex);
         if (item != null)
         {
             item.PickUp(this);
@@ -138,6 +139,19 @@ public class Player
             if (SelectedInventoryIndex >= inventory.Items.Count && SelectedInventoryIndex > 0)
             {
                 SelectedInventoryIndex--;
+            }
+        }
+    }
+    
+    public void TryUnequipAll(Room room)
+    {
+        var unequippedWeapons = equipment.UnequipAll();
+        foreach (var oldWeapon in unequippedWeapons)
+        {
+            if (!inventory.TryAdd(oldWeapon))
+            {
+                var currentCell = room.GetCell(X, Y);
+                currentCell.AddItem(oldWeapon);
             }
         }
     }

@@ -49,6 +49,7 @@ public class Game
                     case ConsoleKey.Q: _player.TryDropItem(_room); break;
                     case ConsoleKey.I: _player.ToggleInventory(); break;
                     case ConsoleKey.T: _player.TryUseItem(_room); break;
+                    case ConsoleKey.Y: _player.TryUnequipAll(_room); break;
                     
                     case ConsoleKey.UpArrow: _player.SelectPreviousItem(); break;
                     case ConsoleKey.DownArrow: _player.SelectNextItem(_room); break;

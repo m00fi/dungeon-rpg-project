@@ -8,6 +8,7 @@ public abstract class Weapon : IItem
 {
     public abstract char Symbol { get; }
     public abstract string Name { get; }
+    public virtual bool IsInventoryItem { get; } = true;
     public abstract int Damage { get; }
     public virtual bool IsTwoHanded => false;
 
@@ -38,6 +39,7 @@ public abstract class Weapon : IItem
             }
         }
     }
+    
     public virtual string GetDescription()
     {
         return $"({Symbol}) {Name} (Damage: {Damage})";

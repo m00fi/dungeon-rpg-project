@@ -17,5 +17,6 @@ public abstract class Cell
     public virtual List<string> GetItemDescriptions() => new List<string>();
     
     public virtual int GetItemsCount() => 0;
+    public virtual IItem? GetItemAt(int index) => null;
     public virtual IItem? PopItemAt(int index) => null;
 }

@@ -19,6 +19,7 @@ public class Menu
         Console.WriteLine(" [Q]\t- Drop item");
         Console.WriteLine(" [I]\t- Switch between inventory/pickup mode");
         Console.WriteLine(" [T]\t- Use (equip) selected item");
+        Console.WriteLine(" [Y]\t- Unequip items from hands");
         Console.WriteLine(" [ESC]\t- Exit game");
         Console.WriteLine();
         

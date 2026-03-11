@@ -54,6 +54,16 @@ public class Equipment
 
         return unequipped;
     }
+    
+    public List<Weapon> UnequipAll()
+    {
+        var unequipped = new List<Weapon>();
+        if (LeftHand != null) unequipped.Add(LeftHand);
+        if (RightHand != null && RightHand != LeftHand) unequipped.Add(RightHand);
+        LeftHand = null;
+        RightHand = null;
+        return unequipped;
+    }
 
     public string GetLeftHandName() => LeftHand?.Name ?? "~empty";
     public string GetRightHandName() => RightHand?.Name ?? "~empty";

@@ -36,6 +36,14 @@ public class EmptyCell : Cell
     
     public override int GetItemsCount() => Items.Count;
 
+    public override IItem? GetItemAt(int index)
+    {
+        if (index < 0 || index >= Items.Count) return null;
+    
+        var item = Items[index];
+        return item;
+    }
+
     public override IItem? PopItemAt(int index)
     {
         if (index < 0 || index >= Items.Count) return null;
