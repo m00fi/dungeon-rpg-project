@@ -5,7 +5,7 @@ public class Menu
     public string DisplayMenu()
     {
         Console.Clear();
-        string logo = "'Rogue (1980)'-like Dungeon RPG game" + ", Michał Chrostowski\n";
+        string logo = "'Rogue (1980)'-like Dungeon RPG game, Michał Chrostowski\n";
     
         Console.BackgroundColor = ConsoleColor.White;
         Console.ForegroundColor = ConsoleColor.Black;
