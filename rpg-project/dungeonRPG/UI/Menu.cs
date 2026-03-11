@@ -25,12 +25,9 @@ public class Menu
         
         Console.Write("Press [ENTER] to enter the dungeon...\nName (max 10): ");
         
-        var hero = Console.ReadLine();
-        if(string.IsNullOrWhiteSpace(hero) || hero.Length > 10)
-        {
-            return "m0fi";
-        }
-        
+        var input = Console.ReadLine();
+        var hero = input != null ? new string(input.Where(c => !char.IsControl(c)).ToArray()).Trim() : "";
+        if(string.IsNullOrWhiteSpace(hero) || hero.Length > 10) return "m0fi";
         return hero;
     }
 }

@@ -24,10 +24,12 @@ public class Player
     
     public Player(string name, int startX, int startY)
     {
-        Symbol = '⁋';
+        Symbol = '¶';
         Name = name;
         if (Name == "Rogue") 
             Symbol = '%';
+        else if(Name == "test_hero")
+            Symbol = '⁋';
         X = startX;
         Y = startY;
     }
