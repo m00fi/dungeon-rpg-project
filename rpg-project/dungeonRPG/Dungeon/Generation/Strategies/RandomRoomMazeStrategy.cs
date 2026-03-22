@@ -1,0 +1,19 @@
+namespace dungeonRPG.Dungeon.Generation.Strategies;
+
+public class RandomRoomMazeStrategy : IDungeonGenerationStrategy
+{
+    public void Generate(IDungeonBuilder dBuilder)
+    {
+        dBuilder.buildFull();
+        dBuilder.AddStarterRoom();
+        dBuilder.AddWeapons();
+        
+        dBuilder.AddCentralRoom(12, 6);
+        dBuilder.AddRooms();
+        dBuilder.AddRooms();
+        dBuilder.AddRooms();
+
+        dBuilder.AddCorridors();
+        dBuilder.AddItems(20);
+    }
+}

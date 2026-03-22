@@ -4,6 +4,7 @@ using Items;
 using Entities;
 public class EmptyCell : Cell
 {
+    public override bool CanHoldItems => true;
     public List<IItem> Items { get; private set; } = new(); 
     public override char GetSymbol()
     {

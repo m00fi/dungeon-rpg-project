@@ -5,6 +5,7 @@ using Items;
 
 public abstract class Cell
 {
+    public virtual bool CanHoldItems => false;
     public abstract char GetSymbol();
     public abstract bool Enter(Player player);
 
