@@ -22,17 +22,17 @@ public class DungeonSelectionMenu
         Console.WriteLine("4. Field with Items");
         
         var choice = Console.ReadKey(true).Key;
-        IDungeonGenerationStrategy strategy = new DefaultTerrainStrategy();
+        IDungeonGenerationStrategy strategy = new RandomRoomMazeStrategy();
 
         switch (choice)
         {
             case ConsoleKey.D1:
+                strategy = new DefaultTerrainStrategy(); 
                 break;
             case ConsoleKey.D2: 
                 strategy = new BossArenaStrategy(); 
                 break;
             case ConsoleKey.D3: 
-                strategy = new RandomRoomMazeStrategy(); 
                 break;
             case ConsoleKey.D4:
                 strategy = new FieldWithItemsStrategy();
