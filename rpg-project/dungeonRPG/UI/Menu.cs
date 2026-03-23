@@ -42,7 +42,12 @@ public class Menu
         Console.WriteLine();
         
         Console.Write("Press [ENTER] to enter the dungeon...");
-        Console.ReadLine();
+        while (true)
+        {
+            var key = Console.ReadKey(true).Key;
+            if (key == ConsoleKey.Enter)
+                break;
+        }
     }
     
 }

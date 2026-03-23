@@ -6,10 +6,10 @@ namespace dungeonRPG.UI;
 
 public class Display
 {
-    private int screenWidth => 82;
-    private int screenHeight => 0;
+    private int ScreenWidth => 82;
+    private int ScreenHeight => 0;
     
-    public void Render(Room room, Player player)
+    public void Render(Room room, Player player, string? message, List<string> instructions)
     {
         Console.SetCursorPosition(0, 0);
 
@@ -81,7 +81,7 @@ public class Display
         string groundTitle = itemDescriptions.Count > maxVisibleGround 
             ? $"Available items to pick up (Total: {itemDescriptions.Count}):" 
             : "Available items to pick up:";
-        Console.WriteLine(groundTitle.PadRight(screenWidth));
+        Console.WriteLine(groundTitle.PadRight(ScreenWidth));
 
         if (itemDescriptions.Count == 0)
         {
@@ -90,22 +90,23 @@ public class Display
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
+                
             }
+            string prefix = isSelected ? "> " : "  ";
+            string textToPrint = $"{prefix}~empty ";
+            Console.Write(textToPrint);
             
-            Console.Write("  ~empty");
             Console.ResetColor();
             
-            int padding = screenWidth - " ~empty".Length;
+            int padding = ScreenWidth - " ~empty".Length;
             if (padding > 0) Console.WriteLine(new string(' ', padding));
             else Console.WriteLine();
             
             for (int i = 1; i < maxVisibleGround; i++) 
             {
-                Console.WriteLine(new string(' ', screenWidth));
+                Console.WriteLine(new string(' ', ScreenWidth));
             }
-            
-            Console.WriteLine(new string(' ', screenWidth));
-            Console.WriteLine(new string(' ', screenWidth));
+            Console.WriteLine(new string(' ', ScreenWidth));
         }
         else
         {
@@ -142,7 +143,7 @@ public class Display
                 }
                 else
                 {
-                    Console.WriteLine(new string(' ', 80));
+                    Console.WriteLine(new string(' ', ScreenWidth)); 
                 }
             }
 
@@ -156,15 +157,33 @@ public class Display
                 else if (moreAbove) scrollIndicator += "^ (more items above)";
                 else if (moreBelow) scrollIndicator += "v (more items below) v";
 
-                Console.WriteLine(scrollIndicator.PadRight(screenWidth));
-                Console.WriteLine(new string(' ', screenWidth)); 
+                Console.WriteLine(scrollIndicator.PadRight(ScreenWidth));
             }
             else
             {
-                Console.WriteLine(new string(' ', screenWidth));
-                Console.WriteLine(new string(' ', screenWidth));
+                Console.WriteLine(new string(' ', ScreenWidth)); 
             }
         }
+        if (message != null)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(message);
+            Console.ResetColor();
+            int padding = ScreenWidth - message.Length;
+            if (padding > 0) Console.WriteLine(new string('-', padding));
+        }
+        else
+        {
+            Console.WriteLine(new string('-', 82));
+        }
+
+        foreach (var inst in instructions)
+        {
+            Console.WriteLine(inst.PadRight(80));
+        }
+        
+        for (int i = 0; i < 3; i++) Console.WriteLine(new string(' ', 80));
     }
 
     public string Separator()
@@ -208,7 +227,8 @@ public class Display
         if (items.Count == 0)
         {
             bool isSelected = player.IsInventoryActive;
-            Add("  ~empty", isSelected);
+            string prefix = isSelected ? "> " : "  ";
+            Add(prefix+ "~empty", isSelected);
             for (int i = 1; i < maxVisible; i++) Add(""); 
         }
         else

@@ -5,14 +5,17 @@ namespace dungeonRPG.Input.Handlers;
 
 public class GroundInputHandler : BaseInputHandler
 {
-    public override InputResult HandleInput(ConsoleKey key, Player player, Room room)
+    public override InputResult HandleInput(ConsoleKey key, Player player, Room room, List<ConsoleKey> activeKeys)
     {
-        // Jeśli ekwipunek jest OTWARTY, to nie nasza działka, podajemy dalej
         if (player.IsInventoryActive)
         {
-            return base.HandleInput(key, player, room);
+            return base.HandleInput(key, player, room, activeKeys);
         }
-
+        
+        if(!activeKeys.Contains(key))
+            return base.HandleInput(key, player, room, activeKeys);
+        string? result = null;
+        
         switch (key)
         {
             case ConsoleKey.UpArrow: 
@@ -24,11 +27,13 @@ public class GroundInputHandler : BaseInputHandler
                 return new InputResult();
                 
             case ConsoleKey.E: 
-                player.TryPickUp(room);
-                return new InputResult();
+                result = player.TryPickUp(room);
+                return new InputResult(false, result);
+            case ConsoleKey.Q:
+                return new InputResult(false, "Press [I] to open inventory and select item to drop.");
                 
             default:
-                return base.HandleInput(key, player, room);
+                return base.HandleInput(key, player, room, activeKeys);
         }
     }
 }

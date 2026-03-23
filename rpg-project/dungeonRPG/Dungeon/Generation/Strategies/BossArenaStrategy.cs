@@ -4,7 +4,7 @@ public class BossArenaStrategy : IDungeonGenerationStrategy
 {
     public void Generate(IDungeonBuilder dBuilder)
     {
-        dBuilder.buildFull();
+        dBuilder.BuildFull();
         dBuilder.AddCentralRoom(30, 12);
         dBuilder.AddItems(20);
         dBuilder.AddWeapons();

@@ -10,6 +10,7 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     private Cell[,] _grid;
     private List<string> _instructions;
     private Random _random;
+    private List<ConsoleKey> _keys;
 
     private int _roomsToAdd = 0;
     private bool _wantsStarterRoom = false;
@@ -42,30 +43,47 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     {
         _grid = new Cell[Room.Height, Room.Width];
         _instructions = new List<string>();
+        _keys = new List<ConsoleKey>();
         _random = new Random();
         _rooms = new List<Rectangle>();
     }
 
-    public void buildEmpty() 
+    public void BuildEmpty() 
     {
         _rooms.Clear();
         for (int y = 0; y < Room.Height; y++)
             for (int x = 0; x < Room.Width; x++)
                 _grid[y, x] = new EmptyCell();
-                
-        if (!_instructions.Contains(" [WASD]\t- Move"))
+
+        if (!_keys.Contains(ConsoleKey.W))
+        {
+            _keys.Add(ConsoleKey.W);
+            _keys.Add(ConsoleKey.A);
+            _keys.Add(ConsoleKey.S);
+            _keys.Add(ConsoleKey.D);
+            _keys.Add(ConsoleKey.I);
             _instructions.Add(" [WASD]\t- Move");
+            _instructions.Add(" [I]\t- Switch between inventory/ground mode");
+        }
     }
 
-    public void buildFull() 
+    public void BuildFull() 
     {
         _rooms.Clear();
         for (int y = 0; y < Room.Height; y++)
             for (int x = 0; x < Room.Width; x++)
                 _grid[y, x] = new WallCell();
 
-        if (!_instructions.Contains(" [WASD]\t- Move"))
+        if (!_keys.Contains(ConsoleKey.W))
+        {
+            _keys.Add(ConsoleKey.W);
+            _keys.Add(ConsoleKey.A);
+            _keys.Add(ConsoleKey.S);
+            _keys.Add(ConsoleKey.D);
+            _keys.Add(ConsoleKey.I);
             _instructions.Add(" [WASD]\t- Move");
+            _instructions.Add(" [I]\t- Switch between inventory/ground mode");
+        }
     }
 
     public void AddCentralRoom(int width, int height)
@@ -102,13 +120,18 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     private void AddSharedItemInstructions()
     {
-        if (!_instructions.Contains(" [E]\t- Pick up / use (equip) selected item"))
+        if (!_keys.Contains(ConsoleKey.E))
         {
+            _keys.Add(ConsoleKey.E);
+            _keys.Add(ConsoleKey.Q);
+            _keys.Add(ConsoleKey.Y);
+            _keys.Add(ConsoleKey.UpArrow);
+            _keys.Add(ConsoleKey.DownArrow);
+            
             _instructions.Add(" [E]\t- Pick up / use (equip) selected item");
-            _instructions.Add(" [Q]\t- Drop item");
+            _instructions.Add(" [Q]\t- Drop selected item");
             _instructions.Add(" [Y]\t- Unequip items from hands");
-            _instructions.Add(" [↑/↓]\t- Select item in inventory/pickup list");
-            _instructions.Add(" [I]\t- Switch between inventory/pickup mode");
+            _instructions.Add(" [↑/↓]\t- Select item in inventory/ground list");
         }
     }
 
@@ -134,11 +157,24 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     public List<string> GetInstructions()
     {
-        if(!_instructions.Contains(" [ESC]\t- Exit game"))
+        if (!_keys.Contains(ConsoleKey.Escape))
         {
+            _keys.Add(ConsoleKey.Escape);
             _instructions.Add(" [ESC]\t- Exit game");
         }
+        
         return _instructions;
+    }
+
+    public List<ConsoleKey> GetKeys()
+    {
+        if (!_keys.Contains(ConsoleKey.Escape))
+        {
+            _keys.Add(ConsoleKey.Escape);
+            _instructions.Add(" [ESC]\t- Exit game");
+        }
+        
+        return _keys;
     }
     
 

@@ -6,5 +6,5 @@ namespace dungeonRPG.Input;
 public interface IInputHandler
 {
     IInputHandler SetNext(IInputHandler handler);
-    InputResult HandleInput(ConsoleKey key, Player player, Room room);
+    InputResult HandleInput(ConsoleKey key, Player player, Room room, List<ConsoleKey> activeKeys);
 }

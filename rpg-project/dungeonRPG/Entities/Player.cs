@@ -8,7 +8,7 @@ using Modules;
 public class Player
 {
     public string Name { get; private set; }
-    public char Symbol { get; private set; }
+    public char Symbol { get; set; }
 
     public int X;
     public int Y;
@@ -26,10 +26,8 @@ public class Player
     {
         Symbol = '¶';
         Name = name;
-        if (Name == "Rogue") 
-            Symbol = '%';
-        else if(Name == "test_hero")
-            Symbol = '⁋';
+        // if (Name == "Rogue") 
+        //     Symbol = '%';
         X = startX;
         Y = startY;
     }
@@ -56,12 +54,13 @@ public class Player
         }
     }
 
-    public void TryPickUp(Room room)
+    public string? TryPickUp(Room room)
     {
         Cell currCell = room.GetCell(X, Y);
         IItem? item = currCell.GetItemAt(SelectedItemIndex);
-        if(item == null || (item.IsInventoryItem && inventory.IsFullInventory())) 
-            return;
+        
+        if(item == null) return "No items to pick up.";
+        if(item.IsInventoryItem && inventory.IsFullInventory()) return "Inventory is full!";
 
         item = currCell.PopItemAt(SelectedItemIndex);
         if (item != null)
@@ -72,11 +71,13 @@ public class Player
                 SelectedItemIndex--;
             }
         }
+
+        return null;
     }
     
-    public void TryDropItem(Room room)
+    public string? TryDropItem(Room room)
     {
-        if (!IsInventoryActive || inventory.Items.Count == 0) return;
+        if (!IsInventoryActive || inventory.Items.Count == 0) return "No items to drop.";
         
         if (SelectedInventoryIndex >= 0 && SelectedInventoryIndex < inventory.Items.Count)
         {
@@ -91,6 +92,8 @@ public class Player
                 SelectedInventoryIndex--;
             }
         }
+
+        return null;
     }
     
     public void ToggleInventory()
@@ -129,9 +132,9 @@ public class Player
         }
     }
     
-    public void TryUseItem(Room room)
+    public string? TryUseItem(Room room)
     {
-        if (!IsInventoryActive || inventory.Items.Count == 0) return;
+        if (!IsInventoryActive || inventory.Items.Count == 0) return "No items to use.";
 
         if (SelectedInventoryIndex >= 0 && SelectedInventoryIndex < inventory.Items.Count)
         {
@@ -143,11 +146,14 @@ public class Player
                 SelectedInventoryIndex--;
             }
         }
+
+        return null;
     }
     
     public void TryUnequipAll(Room room)
     {
         var unequippedWeapons = equipment.UnequipAll();
+        
         foreach (var oldWeapon in unequippedWeapons)
         {
             if (!inventory.TryAdd(oldWeapon))

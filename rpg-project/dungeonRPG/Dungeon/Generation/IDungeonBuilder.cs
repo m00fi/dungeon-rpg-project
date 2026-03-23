@@ -2,9 +2,8 @@ namespace dungeonRPG.Dungeon.Generation;
 
 public interface IDungeonBuilder
 {
-    void buildEmpty();
-    void buildFull();
-
+    void BuildEmpty();
+    void BuildFull();
     void AddCorridors();
     void AddStarterRoom();
     void AddRooms();
@@ -14,4 +13,5 @@ public interface IDungeonBuilder
 
     Room GetResult();
     List<string> GetInstructions();
+    public List<ConsoleKey> GetKeys();
 }

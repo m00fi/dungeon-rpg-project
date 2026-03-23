@@ -6,6 +6,7 @@ public class DungeonSelectionMenu
 {
     public IDungeonGenerationStrategy Display()
     {
+        Console.CursorVisible = false;
         Console.Clear();
         string logo = "'Rogue (1980)'-like Dungeon RPG game, Michał Chrostowski\n";
     
@@ -18,6 +19,7 @@ public class DungeonSelectionMenu
         Console.WriteLine("1. Default Terrain");
         Console.WriteLine("2. Boss Arena");
         Console.WriteLine("3. Random Room Maze");
+        Console.WriteLine("4. Field with Items");
         
         var choice = Console.ReadKey(true).Key;
         IDungeonGenerationStrategy strategy = new DefaultTerrainStrategy();
@@ -31,6 +33,9 @@ public class DungeonSelectionMenu
                 break;
             case ConsoleKey.D3: 
                 strategy = new RandomRoomMazeStrategy(); 
+                break;
+            case ConsoleKey.D4:
+                strategy = new FieldWithItemsStrategy();
                 break;
         }
 

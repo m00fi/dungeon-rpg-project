@@ -15,6 +15,7 @@ public class Game
     private readonly Display _display;
     private readonly Player _player;
     private readonly List<string> _instructions;
+    private readonly List<ConsoleKey> _activeKeys;
     private readonly Menu _menu;
     private readonly IInputHandler _inputHandler;
     
@@ -26,6 +27,7 @@ public class Game
 
         _room = builder.GetResult();
         _instructions = builder.GetInstructions();
+        _activeKeys = builder.GetKeys();
         
         _menu = new Menu(_instructions);
         
@@ -45,6 +47,7 @@ public class Game
     
         _room = builder.GetResult();
         _instructions = builder.GetInstructions();
+        _activeKeys = builder.GetKeys();
     
         _menu = new Menu(_instructions);
         
@@ -67,28 +70,25 @@ public class Game
     {   
         Console.CursorVisible = false;
         Console.Clear();
+        
+        string? currentMessage = null;
 
         try
         {
             while (true)
             {
-                _display.Render(_room, _player);
+                _display.Render(_room, _player, currentMessage, _instructions);
+                currentMessage = null;
 
                 var key = Console.ReadKey(intercept: true).Key;
-
-                var result = _inputHandler.HandleInput(key, _player, _room);
+                var result = _inputHandler.HandleInput(key, _player, _room, _activeKeys);
 
                 if (result.ExitGame)
                     return;
                 
                 if (result.Message != null)
                 {
-                    Console.SetCursorPosition(42, 22);
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(result.Message.PadRight(40));
-                    Console.ResetColor();
-                    System.Threading.Thread.Sleep(800);
+                    currentMessage = result.Message;
                 }
             }
         }

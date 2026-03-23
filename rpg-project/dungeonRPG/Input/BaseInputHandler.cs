@@ -13,11 +13,11 @@ public abstract class BaseInputHandler : IInputHandler
         return handler;
     }
     
-    public virtual InputResult HandleInput(ConsoleKey key, Player player, Room room)
+    public virtual InputResult HandleInput(ConsoleKey key, Player player, Room room, List<ConsoleKey> activeKeys)
     {
         if (_nextInputHandler != null)
         {
-            return _nextInputHandler.HandleInput(key, player, room);
+            return _nextInputHandler.HandleInput(key, player, room, activeKeys);
         }
         
         return new InputResult(false, "Unknown command!");
