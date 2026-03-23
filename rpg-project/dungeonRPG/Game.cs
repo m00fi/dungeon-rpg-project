@@ -29,6 +29,19 @@ public class Game
         _display = new Display();
         _player = new Player("m0fi",0, 0);
     }
+    public Game(IDungeonGenerationStrategy strategy)
+    {
+        IDungeonBuilder builder = new DefaultDungeonBuilder();
+        strategy.Generate(builder);
+    
+        _room = builder.GetResult();
+        _instructions = builder.GetInstructions();
+    
+        _menu = new Menu(_instructions);
+        
+        _display = new Display();
+        _player = new Player("m0fi",0, 0);
+    }
     
     // public Game(string heroName)
     // {

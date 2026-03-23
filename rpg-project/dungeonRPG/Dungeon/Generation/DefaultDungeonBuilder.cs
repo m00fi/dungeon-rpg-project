@@ -154,7 +154,7 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     private void GenerateStarterRoom()
     {
-        var spawnRoom = new Rectangle(0, 0, 5, 5); 
+        var spawnRoom = new Rectangle(0, 0, 3, 2); 
         if (!IsOverlapping(spawnRoom))
         {
             _rooms.Add(spawnRoom);
