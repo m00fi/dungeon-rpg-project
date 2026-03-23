@@ -10,7 +10,6 @@ public abstract class Weapon : IItem
     public abstract string Name { get; }
     public virtual bool IsInventoryItem { get; } = true;
     public abstract int Damage { get; }
-    public virtual bool IsTwoHanded => false;
 
     public virtual void PickUp(Player player)
     {
@@ -21,14 +20,7 @@ public abstract class Weapon : IItem
         player.inventory.Remove(this);
 
         List<Weapon> unequippedWeapons;
-        if (IsTwoHanded)
-        {
-            unequippedWeapons = player.equipment.EquipTwoHanded(this);
-        }
-        else
-        {
-            unequippedWeapons = player.equipment.EquipOneHanded(this);
-        }
+        unequippedWeapons = player.equipment.EquipOneHanded(this);
 
         foreach (var oldWeapon in unequippedWeapons)
         {

@@ -6,6 +6,9 @@ namespace dungeonRPG.UI;
 
 public class Display
 {
+    private int screenWidth => 82;
+    private int screenHeight => 0;
+    
     public void Render(Room room, Player player)
     {
         Console.SetCursorPosition(0, 0);
@@ -78,19 +81,31 @@ public class Display
         string groundTitle = itemDescriptions.Count > maxVisibleGround 
             ? $"Available items to pick up (Total: {itemDescriptions.Count}):" 
             : "Available items to pick up:";
-        Console.WriteLine(groundTitle.PadRight(80));
+        Console.WriteLine(groundTitle.PadRight(screenWidth));
 
         if (itemDescriptions.Count == 0)
         {
-            Console.WriteLine("  ~empty".PadRight(80));
+            bool isSelected = !player.IsInventoryActive;
+            if (isSelected)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            
+            Console.Write("  ~empty");
+            Console.ResetColor();
+            
+            int padding = screenWidth - " ~empty".Length;
+            if (padding > 0) Console.WriteLine(new string(' ', padding));
+            else Console.WriteLine();
             
             for (int i = 1; i < maxVisibleGround; i++) 
             {
-                Console.WriteLine(new string(' ', 80));
+                Console.WriteLine(new string(' ', screenWidth));
             }
             
-            Console.WriteLine(new string(' ', 80));
-            Console.WriteLine(new string(' ', 80));
+            Console.WriteLine(new string(' ', screenWidth));
+            Console.WriteLine(new string(' ', screenWidth));
         }
         else
         {
@@ -141,13 +156,13 @@ public class Display
                 else if (moreAbove) scrollIndicator += "^ (more items above)";
                 else if (moreBelow) scrollIndicator += "v (more items below) v";
 
-                Console.WriteLine(scrollIndicator.PadRight(80));
-                Console.WriteLine(new string(' ', 80)); 
+                Console.WriteLine(scrollIndicator.PadRight(screenWidth));
+                Console.WriteLine(new string(' ', screenWidth)); 
             }
             else
             {
-                Console.WriteLine(new string(' ', 80));
-                Console.WriteLine(new string(' ', 80));
+                Console.WriteLine(new string(' ', screenWidth));
+                Console.WriteLine(new string(' ', screenWidth));
             }
         }
     }
@@ -192,7 +207,8 @@ public class Display
 
         if (items.Count == 0)
         {
-            Add("  ~empty");
+            bool isSelected = player.IsInventoryActive;
+            Add("  ~empty", isSelected);
             for (int i = 1; i < maxVisible; i++) Add(""); 
         }
         else

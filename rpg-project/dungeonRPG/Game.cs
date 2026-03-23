@@ -2,6 +2,8 @@ using dungeonRPG.Dungeon.Cells;
 using dungeonRPG.Dungeon.Generation;
 using dungeonRPG.Dungeon.Generation.Strategies;
 using dungeonRPG.Entities;
+using dungeonRPG.Input;
+using dungeonRPG.Input.Handlers;
 
 namespace dungeonRPG;
 
@@ -14,7 +16,8 @@ public class Game
     private readonly Player _player;
     private readonly List<string> _instructions;
     private readonly Menu _menu;
-
+    private readonly IInputHandler _inputHandler;
+    
     public Game()
     {
         IDungeonGenerationStrategy strategy = new RandomRoomMazeStrategy();
@@ -28,6 +31,12 @@ public class Game
         
         _display = new Display();
         _player = new Player("m0fi",0, 0);
+        
+        _inputHandler = new InventoryInputHandler();
+        _inputHandler.SetNext(new GroundInputHandler())
+                     .SetNext(new MovementInputHandler())
+                     .SetNext(new GlobalActionHandler())
+                     .SetNext(new UnboundKeyHandler());
     }
     public Game(IDungeonGenerationStrategy strategy)
     {
@@ -41,25 +50,19 @@ public class Game
         
         _display = new Display();
         _player = new Player("m0fi",0, 0);
+        
+        _inputHandler = new InventoryInputHandler();
+        _inputHandler.SetNext(new GroundInputHandler())
+            .SetNext(new MovementInputHandler())
+            .SetNext(new GlobalActionHandler())
+            .SetNext(new UnboundKeyHandler());
     }
-    
-    // public Game(string heroName)
-    // {
-    //     IDungeonGenerationStrategy strategy = new BossArenaStrategy();
-    //     IDungeonBuilder builder = new DefaultDungeonBuilder();
-    //     strategy.Generate(builder);
-    //
-    //     _room = builder.GetResult();
-    //     _instructions = builder.GetInstructions();
-    //
-    //     _display = new Display();
-    //     _player = new Player(heroName,0, 0);
-    // }
 
     public void DisplayMenu()
     {
         _menu.Display();
     }
+    
     public void Run()
     {   
         Console.CursorVisible = false;
@@ -73,23 +76,19 @@ public class Game
 
                 var key = Console.ReadKey(intercept: true).Key;
 
-                switch (key)
+                var result = _inputHandler.HandleInput(key, _player, _room);
+
+                if (result.ExitGame)
+                    return;
+                
+                if (result.Message != null)
                 {
-                    case ConsoleKey.W: _player.TryMove(0, -1, _room); break;
-                    case ConsoleKey.S: _player.TryMove(0, 1, _room); break;
-                    case ConsoleKey.A: _player.TryMove(-1, 0, _room); break;
-                    case ConsoleKey.D: _player.TryMove(1, 0, _room); break;
-                    
-                    case ConsoleKey.E: _player.TryPickUp(_room); break;
-                    case ConsoleKey.Q: _player.TryDropItem(_room); break;
-                    case ConsoleKey.I: _player.ToggleInventory(); break;
-                    case ConsoleKey.T: _player.TryUseItem(_room); break;
-                    case ConsoleKey.Y: _player.TryUnequipAll(_room); break;
-                    
-                    case ConsoleKey.UpArrow: _player.SelectPreviousItem(); break;
-                    case ConsoleKey.DownArrow: _player.SelectNextItem(_room); break;
-                    
-                    case ConsoleKey.Escape: return;
+                    Console.SetCursorPosition(42, 22);
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(result.Message.PadRight(40));
+                    Console.ResetColor();
+                    System.Threading.Thread.Sleep(800);
                 }
             }
         }

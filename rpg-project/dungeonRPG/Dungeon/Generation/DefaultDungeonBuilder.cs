@@ -102,11 +102,10 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     private void AddSharedItemInstructions()
     {
-        if (!_instructions.Contains(" [E]\t- Pick up item"))
+        if (!_instructions.Contains(" [E]\t- Pick up / use (equip) selected item"))
         {
-            _instructions.Add(" [E]\t- Pick up item");
+            _instructions.Add(" [E]\t- Pick up / use (equip) selected item");
             _instructions.Add(" [Q]\t- Drop item");
-            _instructions.Add(" [T]\t- Use (equip) selected item");
             _instructions.Add(" [Y]\t- Unequip items from hands");
             _instructions.Add(" [↑/↓]\t- Select item in inventory/pickup list");
             _instructions.Add(" [I]\t- Switch between inventory/pickup mode");

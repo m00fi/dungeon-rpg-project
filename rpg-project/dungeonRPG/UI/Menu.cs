@@ -25,10 +25,9 @@ public class Menu
         {
             Console.WriteLine(" [WASD]\t- Move");
             Console.WriteLine(" [↑/↓]\t- Select item in inventory/pickup list");
-            Console.WriteLine(" [E]\t- Pick up item");
+            Console.WriteLine(" [E]\t- Pick up / use (equip) selected item");
             Console.WriteLine(" [Q]\t- Drop item");
             Console.WriteLine(" [I]\t- Switch between inventory/pickup mode");
-            Console.WriteLine(" [T]\t- Use (equip) selected item");
             Console.WriteLine(" [Y]\t- Unequip items from hands");
             Console.WriteLine(" [ESC]\t- Exit game");
         }
