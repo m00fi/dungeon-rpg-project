@@ -32,6 +32,10 @@ public class InventoryInputHandler : BaseInputHandler
             case ConsoleKey.Q: 
                 result = player.TryDropItem(room); 
                 return new InputResult(false, result);
+            
+            case ConsoleKey.Y: 
+                result = player.TryUnequipAll(room); 
+                return new InputResult(false, result);
                 
             default:
                 return base.HandleInput(key, player, room, activeKeys);

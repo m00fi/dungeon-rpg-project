@@ -150,9 +150,12 @@ public class Player
         return null;
     }
     
-    public void TryUnequipAll(Room room)
+    public string? TryUnequipAll(Room room)
     {
         var unequippedWeapons = equipment.UnequipAll();
+        
+        if(unequippedWeapons.Count == 0)
+            return "No items to unequip.";
         
         foreach (var oldWeapon in unequippedWeapons)
         {
@@ -162,5 +165,7 @@ public class Player
                 currentCell.AddItem(oldWeapon);
             }
         }
+
+        return null;
     }
 }

@@ -29,6 +29,10 @@ public class GroundInputHandler : BaseInputHandler
             case ConsoleKey.E: 
                 result = player.TryPickUp(room);
                 return new InputResult(false, result);
+            
+            case ConsoleKey.Y: 
+                return new InputResult(false, "Open inventory [I] to unequip items.");
+            
             case ConsoleKey.Q:
                 return new InputResult(false, "Press [I] to open inventory and select item to drop.");
                 
