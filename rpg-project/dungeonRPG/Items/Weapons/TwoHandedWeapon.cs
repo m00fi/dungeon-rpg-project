@@ -17,7 +17,7 @@ public abstract class TwoHandedWeapon : Weapon
             if (!player.inventory.TryAdd(oldWeapon))
             {
                 var currentCell = room.GetCell(player.X, player.Y);
-                currentCell.AddItem(oldWeapon);
+                currentCell.TryAddItem(oldWeapon);
             }
         }
     }

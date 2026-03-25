@@ -15,8 +15,12 @@ public class EmptyCell : Cell
     }
 
     public override bool Enter(Player player) => true;
-    public override void AddItem(IItem item) => Items.Add(item);
 
+    public override bool TryAddItem(IItem item)
+    {
+        Items.Add(item);
+        return true;
+    }
     public override IItem? PopItem()
     {
         if (Items.Count == 0) return null;

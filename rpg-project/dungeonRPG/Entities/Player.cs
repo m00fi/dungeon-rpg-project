@@ -85,7 +85,7 @@ public class Player
             inventory.Remove(itemToDrop);
             
             Cell currCell = room.GetCell(X, Y);
-            currCell.AddItem(itemToDrop);
+            currCell.TryAddItem(itemToDrop);
             
             if (SelectedInventoryIndex >= inventory.Items.Count && SelectedInventoryIndex > 0)
             {
@@ -162,7 +162,7 @@ public class Player
             if (!inventory.TryAdd(oldWeapon))
             {
                 var currentCell = room.GetCell(X, Y);
-                currentCell.AddItem(oldWeapon);
+                currentCell.TryAddItem(oldWeapon);
             }
         }
 

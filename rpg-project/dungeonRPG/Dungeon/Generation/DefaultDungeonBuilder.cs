@@ -238,21 +238,6 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         }
     }
 
-    // private void GenerateCorridors()
-    // {
-    //     if (_rooms.Count < 2)
-    //     {
-    //         GenerateMaze();
-    //         return;
-    //     }
-    //     var sortedRooms = _rooms.OrderBy(r => r.X).ToList();
-    //     for (int i = 0; i < sortedRooms.Count - 1; i++)
-    //     {
-    //         CreateLCorridor(sortedRooms[i].CenterX, sortedRooms[i].CenterY,
-    //                         sortedRooms[i + 1].CenterX, sortedRooms[i + 1].CenterY);
-    //     }
-    // }
-
     private void GenerateMaze()
     {
         var stack = new Stack<(int X, int Y)>();
@@ -319,11 +304,11 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                 int itemType = _random.Next(5);
                 switch (itemType)
                 {
-                    case 0: _grid[y, x].AddItem(new HealthPotion()); break;
-                    case 1: _grid[y, x].AddItem(new Fireball()); break;
-                    case 2: _grid[y, x].AddItem(new Quiver()); break;
-                    case 3: _grid[y, x].AddItem(new Coin(_random.Next(1, 5))); break;
-                    case 4: _grid[y, x].AddItem(new Gold(_random.Next(1, 5))); break;
+                    case 0: _grid[y, x].TryAddItem(new HealthPotion()); break;
+                    case 1: _grid[y, x].TryAddItem(new Fireball()); break;
+                    case 2: _grid[y, x].TryAddItem(new Quiver()); break;
+                    case 3: _grid[y, x].TryAddItem(new Coin(_random.Next(1, 5))); break;
+                    case 4: _grid[y, x].TryAddItem(new Gold(_random.Next(1, 5))); break;
                 }
                 placed++;
             }
@@ -351,10 +336,10 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                     int weaponType = _random.Next(4);
                     switch (weaponType)
                     {
-                        case 0: _grid[y, x].AddItem(new Staff()); break;
-                        case 1: _grid[y, x].AddItem(new Spear()); break;
-                        case 2: _grid[y, x].AddItem(new Greatbow()); break;
-                        case 3: _grid[y, x].AddItem(new Greataxe()); break;
+                        case 0: _grid[y, x].TryAddItem(new Staff()); break;
+                        case 1: _grid[y, x].TryAddItem(new Spear()); break;
+                        case 2: _grid[y, x].TryAddItem(new Greatbow()); break;
+                        case 3: _grid[y, x].TryAddItem(new Greataxe()); break;
                     }
                     placed++;
                     currentGridPlaced++;
@@ -379,6 +364,23 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                 if (x >= 0 && x < Room.Width && y >= 0 && y < Room.Height)
                     _grid[y, x] = new EmptyCell();
     }
+    
+    // Currently unused corridor generation algorithm that creates direct L-shaped corridors between room centers
+    
+    // private void GenerateCorridors()
+    // {
+    //     if (_rooms.Count < 2)
+    //     {
+    //         GenerateMaze();
+    //         return;
+    //     }
+    //     var sortedRooms = _rooms.OrderBy(r => r.X).ToList();
+    //     for (int i = 0; i < sortedRooms.Count - 1; i++)
+    //     {
+    //         CreateLCorridor(sortedRooms[i].CenterX, sortedRooms[i].CenterY,
+    //                         sortedRooms[i + 1].CenterX, sortedRooms[i + 1].CenterY);
+    //     }
+    // }
 
     // private void CreateLCorridor(int x1, int y1, int x2, int y2)
     // {
