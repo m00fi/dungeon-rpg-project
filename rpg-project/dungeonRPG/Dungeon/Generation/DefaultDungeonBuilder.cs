@@ -54,17 +54,8 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         for (int y = 0; y < Room.Height; y++)
             for (int x = 0; x < Room.Width; x++)
                 _grid[y, x] = new EmptyCell();
-
-        if (!_keys.Contains(ConsoleKey.W))
-        {
-            _keys.Add(ConsoleKey.W);
-            _keys.Add(ConsoleKey.A);
-            _keys.Add(ConsoleKey.S);
-            _keys.Add(ConsoleKey.D);
-            _keys.Add(ConsoleKey.I);
-            _instructions.Add(" [WASD]\t- Move");
-            _instructions.Add(" [I]\t- Switch between inventory/ground mode");
-        }
+        
+        AddSharedMovementInstructions();
     }
 
     public void BuildFull() 
@@ -74,16 +65,7 @@ public class DefaultDungeonBuilder : IDungeonBuilder
             for (int x = 0; x < Room.Width; x++)
                 _grid[y, x] = new WallCell();
 
-        if (!_keys.Contains(ConsoleKey.W))
-        {
-            _keys.Add(ConsoleKey.W);
-            _keys.Add(ConsoleKey.A);
-            _keys.Add(ConsoleKey.S);
-            _keys.Add(ConsoleKey.D);
-            _keys.Add(ConsoleKey.I);
-            _instructions.Add(" [WASD]\t- Move");
-            _instructions.Add(" [I]\t- Switch between inventory/ground mode");
-        }
+        AddSharedMovementInstructions();
     }
 
     public void AddCentralRoom(int width, int height)
@@ -118,6 +100,20 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         AddSharedItemInstructions();
     }
 
+    private void AddSharedMovementInstructions()
+    {
+        if (!_keys.Contains(ConsoleKey.W))
+        {
+            _keys.Add(ConsoleKey.W);
+            _keys.Add(ConsoleKey.A);
+            _keys.Add(ConsoleKey.S);
+            _keys.Add(ConsoleKey.D);
+            _keys.Add(ConsoleKey.I);
+            _instructions.Add(" [WASD]\t- Move");
+            _instructions.Add(" [I]\t- Switch between inventory/ground mode");
+        }
+    }
+    
     private void AddSharedItemInstructions()
     {
         if (!_keys.Contains(ConsoleKey.E))
