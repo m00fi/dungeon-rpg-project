@@ -145,8 +145,6 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         if (_roomsToAdd > 0)
             GenerateRooms(_roomsToAdd);
 
-        
-
         if (_itemsToPlace > 0) PlaceItems(_itemsToPlace);
         if (_weaponsToPlace > 0) PlaceWeapons(_weaponsToPlace);
 
@@ -344,7 +342,6 @@ public class DefaultDungeonBuilder : IDungeonBuilder
             safetyNet++;
         }
     }
-    
 
     private bool IsOverlapping(Rectangle newRoom)
     {
@@ -360,49 +357,4 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                 if (x >= 0 && x < Room.Width && y >= 0 && y < Room.Height)
                     _grid[y, x] = new EmptyCell();
     }
-    
-    // Currently unused corridor generation algorithm that creates direct L-shaped corridors between room centers
-    
-    // private void GenerateCorridors()
-    // {
-    //     if (_rooms.Count < 2)
-    //     {
-    //         GenerateMaze();
-    //         return;
-    //     }
-    //     var sortedRooms = _rooms.OrderBy(r => r.X).ToList();
-    //     for (int i = 0; i < sortedRooms.Count - 1; i++)
-    //     {
-    //         CreateLCorridor(sortedRooms[i].CenterX, sortedRooms[i].CenterY,
-    //                         sortedRooms[i + 1].CenterX, sortedRooms[i + 1].CenterY);
-    //     }
-    // }
-
-    // private void CreateLCorridor(int x1, int y1, int x2, int y2)
-    // {
-    //     if (_random.Next(2) == 0)
-    //     {
-    //         CarveHorizontalCorridor(x1, x2, y1);
-    //         CarveVerticalCorridor(y1, y2, x2);
-    //     }
-    //     else
-    //     {
-    //         CarveVerticalCorridor(y1, y2, x1);
-    //         CarveHorizontalCorridor(x1, x2, y2);
-    //     }
-    // }
-
-    // private void CarveHorizontalCorridor(int x1, int x2, int y)
-    // {
-    //     if (y < 0 || y >= Room.Height) return;
-    //     for (int x = Math.Min(x1, x2); x <= Math.Max(x1, x2); x++)
-    //         if (x >= 0 && x < Room.Width) _grid[y, x] = new EmptyCell();
-    // }
-    //
-    // private void CarveVerticalCorridor(int y1, int y2, int x)
-    // {
-    //     if (x < 0 || x >= Room.Width) return;
-    //     for (int y = Math.Min(y1, y2); y <= Math.Max(y1, y2); y++)
-    //         if (y >= 0 && y < Room.Height) _grid[y, x] = new EmptyCell();
-    // }
 }

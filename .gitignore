@@ -18,3 +18,5 @@ Thumbs.db
 packages/
 *.nupkg
 project.lock.json
+
+Unused/
