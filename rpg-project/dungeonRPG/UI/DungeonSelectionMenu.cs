@@ -20,6 +20,7 @@ public class DungeonSelectionMenu
         Console.WriteLine("2. Boss Arena");
         Console.WriteLine("3. Random Room Maze");
         Console.WriteLine("4. Field with Items");
+        Console.WriteLine("5. Random Corridor Maze");
         
         var choice = Console.ReadKey(true).Key;
         IDungeonGenerationStrategy strategy = new RandomRoomMazeStrategy();
@@ -36,6 +37,9 @@ public class DungeonSelectionMenu
                 break;
             case ConsoleKey.D4:
                 strategy = new FieldWithItemsStrategy();
+                break;
+            case ConsoleKey.D5:
+                strategy = new RandomCorridorMazeStrategy();
                 break;
         }
 
