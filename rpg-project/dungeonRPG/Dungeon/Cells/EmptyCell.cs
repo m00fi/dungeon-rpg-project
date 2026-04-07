@@ -5,16 +5,25 @@ using Entities;
 public class EmptyCell : Cell
 {
     public override bool CanHoldItems => true;
-    public List<IItem> Items { get; private set; } = new(); 
+    public List<IItem> Items { get; private set; } = new();
     public override char GetSymbol()
     {
+        if (Enemy != null && !Enemy.IsDead)
+            return Enemy.Symbol;
+        
         if (Items.Count == 0)
             return ' ';
 
         return Items.First().Symbol;
     }
 
-    public override bool Enter(Player player) => true;
+    public override bool Enter(Player player)
+    {
+        if (Enemy != null && !Enemy.IsDead)
+            return false;
+        
+        return true;    
+    }
 
     public override bool TryAddItem(IItem item)
     {

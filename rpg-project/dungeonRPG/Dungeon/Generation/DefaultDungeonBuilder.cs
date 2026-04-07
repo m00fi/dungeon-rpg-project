@@ -1,4 +1,5 @@
 using dungeonRPG.Dungeon.Cells;
+using dungeonRPG.Input;
 using dungeonRPG.Items.Currencies;
 using dungeonRPG.Items.Others;
 using dungeonRPG.Items.Weapons;
@@ -11,6 +12,7 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     private List<string> _instructions;
     private Random _random;
     private List<ConsoleKey> _keys;
+    private List<GameAction> _actions;
 
     private int _roomsToAdd = 0;
     private bool _wantsStarterRoom = false;
@@ -18,6 +20,7 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     private int _itemsToPlace = 0;
     private int _weaponsToPlace = 0;
     private (int w, int h)? _centralRoomSize = null;
+    private int _enemiesToPlace = 0;
 
     private class Rectangle
     {
@@ -46,6 +49,8 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         _keys = new List<ConsoleKey>();
         _random = new Random();
         _rooms = new List<Rectangle>();
+        
+        _actions = new List<GameAction>();
     }
 
     public void BuildEmpty() 
@@ -100,6 +105,11 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         AddSharedItemInstructions();
     }
 
+    public void AddEnemies(int count)
+    {
+        _enemiesToPlace += count;
+    }
+
     private void AddSharedMovementInstructions()
     {
         if (!_keys.Contains(ConsoleKey.W))
@@ -109,8 +119,13 @@ public class DefaultDungeonBuilder : IDungeonBuilder
             _keys.Add(ConsoleKey.S);
             _keys.Add(ConsoleKey.D);
             _keys.Add(ConsoleKey.I);
-            _instructions.Add(" [WASD]\t- Move");
-            _instructions.Add(" [I]\t- Switch between inventory/ground mode");
+            
+            _instructions.Add($" [{KeyBinds.Map[GameAction.MoveUp]}" +
+                              $"{KeyBinds.Map[GameAction.MoveLeft]}" +
+                              $"{KeyBinds.Map[GameAction.MoveDown]}" +
+                              $"{KeyBinds.Map[GameAction.MoveRight]}]\t- Move");
+            
+            _instructions.Add($" [{KeyBinds.Map[GameAction.ToggleInventory]}]\t- Switch between inventory/ground mode");
         }
     }
     
@@ -124,9 +139,9 @@ public class DefaultDungeonBuilder : IDungeonBuilder
             _keys.Add(ConsoleKey.UpArrow);
             _keys.Add(ConsoleKey.DownArrow);
             
-            _instructions.Add(" [E]\t- Pick up / use (equip) selected item");
-            _instructions.Add(" [Q]\t- Drop selected item");
-            _instructions.Add(" [Y]\t- Unequip items from hands");
+            _instructions.Add($" [{KeyBinds.Map[GameAction.Interact]}]\t- Pick up / use (equip) selected item");
+            _instructions.Add($" [{KeyBinds.Map[GameAction.DropItem]}]\t- Drop selected item");
+            _instructions.Add($" [{KeyBinds.Map[GameAction.DropItem]}]\t- Unequip items from hands");
             _instructions.Add(" [↑/↓]\t- Select item in inventory/ground list");
         }
     }
@@ -147,6 +162,13 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
         if (_itemsToPlace > 0) PlaceItems(_itemsToPlace);
         if (_weaponsToPlace > 0) PlaceWeapons(_weaponsToPlace);
+        if(_enemiesToPlace > 0) PlaceEnemies(_enemiesToPlace);
+        
+        // DEBUG:
+        _grid[1, 1] = new EmptyCell();
+        _grid[1, 1].TryAddItem(new HeavyModifier(new Greataxe()));
+        _grid[1, 1].TryAddItem(new UnluckyModifier(new StrongModifier(new Staff())));
+        
 
         return new Room(_grid);
     }
@@ -330,14 +352,33 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                     int weaponType = _random.Next(4);
                     switch (weaponType)
                     {
-                        case 0: _grid[y, x].TryAddItem(new Staff()); break;
-                        case 1: _grid[y, x].TryAddItem(new Spear()); break;
-                        case 2: _grid[y, x].TryAddItem(new Greatbow()); break;
-                        case 3: _grid[y, x].TryAddItem(new Greataxe()); break;
+                        case 0: _grid[y, x].TryAddItem(new StrongModifier(new Staff())); break;
+                        case 1: _grid[y, x].TryAddItem(new StrongModifier(new Spear())); break;
+                        case 2: _grid[y, x].TryAddItem(new StrongModifier(new Greatbow())); break;
+                        case 3: _grid[y, x].TryAddItem(new StrongModifier(new Greataxe())); break;
                     }
                     placed++;
                     currentGridPlaced++;
                 }
+            }
+            safetyNet++;
+        }
+    }
+    
+    private void PlaceEnemies(int count)
+    {
+        int placed = 0;
+        int safetyNet = 0;
+    
+        while (placed < count && safetyNet < 1000)
+        {
+            int x = _random.Next(Room.Width);
+            int y = _random.Next(Room.Height);
+
+            if (_grid[y, x].CanHoldItems && _grid[y, x].Enemy == null)
+            {
+                _grid[y, x].Enemy = new dungeonRPG.Entities.Enemies.Goblin(10, 10, 10); 
+                placed++;
             }
             safetyNet++;
         }

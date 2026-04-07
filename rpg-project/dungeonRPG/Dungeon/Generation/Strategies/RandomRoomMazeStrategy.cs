@@ -14,5 +14,6 @@ public class RandomRoomMazeStrategy : IDungeonGenerationStrategy
         dBuilder.AddCorridors();
         dBuilder.AddWeapons();
         dBuilder.AddItems(20);
+        dBuilder.AddEnemies(20);
     }
 }

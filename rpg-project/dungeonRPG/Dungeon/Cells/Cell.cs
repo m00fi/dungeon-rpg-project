@@ -1,3 +1,5 @@
+using dungeonRPG.Entities.Enemies;
+
 namespace dungeonRPG.Dungeon.Cells;
 using Entities;
 using Items;
@@ -6,6 +8,7 @@ using Items;
 public abstract class Cell
 {
     public virtual bool CanHoldItems => false;
+    public virtual Enemy? Enemy { get; set; } = null; 
     public abstract char GetSymbol();
     public abstract bool Enter(Player player);
 

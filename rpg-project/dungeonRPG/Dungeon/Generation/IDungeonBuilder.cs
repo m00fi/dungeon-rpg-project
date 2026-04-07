@@ -10,6 +10,7 @@ public interface IDungeonBuilder
     void AddCentralRoom(int width, int height);
     void AddItems(int count);
     void AddWeapons();
+    void AddEnemies(int count);
 
     Room GetResult();
     List<string> GetInstructions();
