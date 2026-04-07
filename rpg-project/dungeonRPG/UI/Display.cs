@@ -74,11 +74,12 @@ public class Display
         Console.BackgroundColor = ConsoleColor.DarkRed;
         Console.ForegroundColor = ConsoleColor.White;
 
-        Console.Write($"BATTLE:");
+        Console.Write($"ENEMY APPROACHED:");
         Console.ResetColor();
         //Console.WriteLine($"".PadRight(ScreenWidth));
         Console.Write($" ({enemy.Symbol}) {enemy.Name}");
         Console.WriteLine($" | HP: {enemy.Health} | ATK: {enemy.Attack} | DEF: {enemy.Armor}".PadRight(ScreenWidth));
+        
         Console.WriteLine(new string(' ', ScreenWidth - 40 + SidePanelWidth));
         Console.WriteLine(new string(' ', ScreenWidth - 40 + SidePanelWidth));
         Console.WriteLine("Choose your attack:".PadRight(ScreenWidth));
@@ -91,22 +92,22 @@ public class Display
     {
         if (message != null)
         {
-            Console.Write("LOG:");
+            //Console.Write("LOG:");
             Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(message);
             Console.ResetColor();
             
             int padding = ScreenWidth - 40 + SidePanelWidth - message.Length;
-            if (padding > 0) Console.WriteLine(new string('-', padding - 5));
+            if (padding > 0) Console.WriteLine(new string('-', padding));
         }
         else
         {
             // Console.BackgroundColor = ConsoleColor.DarkRed;
             // Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("LOG:");
+            //Console.Write("LOG:");
             // Console.ResetColor();
-            Console.WriteLine(new string('-', ScreenWidth - 40 + SidePanelWidth - 4));
+            Console.WriteLine(new string('-', ScreenWidth - 40 + SidePanelWidth));
         }
     }
 

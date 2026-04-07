@@ -51,7 +51,7 @@ public class CombatInputHandler : BaseInputHandler
             }
             else if (player.stats.Health <= 0)
             {
-                return new InputResult(false, "YOU DIED! GAME OVER. Press any button to quit."); 
+                return new InputResult(false, "YOU DIED! GAME OVER. Press [ESC] to quit."); 
             }
 
             return new InputResult(false, resultMessage);
