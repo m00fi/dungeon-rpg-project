@@ -65,6 +65,6 @@ public class Equipment
         return unequipped;
     }
 
-    public string GetLeftHandName() => LeftHand?.Name ?? "~empty";
-    public string GetRightHandName() => RightHand?.Name ?? "~empty";
+    public string GetLeftHandName() => LeftHand?.GetDescription() ?? "~empty" + new string(' ', 42);
+    public string GetRightHandName() => RightHand?.GetDescription() ?? "~empty" + new string(' ', 42);
 }

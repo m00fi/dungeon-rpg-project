@@ -1,4 +1,5 @@
 using dungeonRPG.Dungeon;
+using dungeonRPG.Entities.Modules;
 
 namespace dungeonRPG.Items.Weapons;
 
@@ -10,17 +11,24 @@ public abstract class Weapon : IItem
     public abstract string Name { get; }
     public virtual bool IsInventoryItem { get; } = true;
     public abstract int Damage { get; }
+    
+    public virtual int StrengthBonus => 0;
+    public virtual int DexterityBonus => 0;
+    public virtual int HealthBonus => 0;
+    public virtual int LuckBonus => 0;
+    public virtual int AggressionBonus => 0;
+    public virtual int WisdomBonus => 0;
+    
 
     public virtual void PickUp(Player player)
     {
         player.inventory.TryAdd(this);
     }
+    
     public virtual void Use(Player player, Room room)
     {
         player.inventory.Remove(this);
-
-        List<Weapon> unequippedWeapons;
-        unequippedWeapons = player.equipment.EquipOneHanded(this);
+        List<Weapon> unequippedWeapons = EquipTo(player.equipment, this);
 
         foreach (var oldWeapon in unequippedWeapons)
         {
@@ -31,6 +39,7 @@ public abstract class Weapon : IItem
             }
         }
     }
+    public abstract List<Weapon> EquipTo(Equipment equipment, Weapon actualWeapon);
     
     public virtual string GetDescription()
     {

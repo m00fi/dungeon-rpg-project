@@ -13,7 +13,7 @@ public class Player
     public int X;
     public int Y;
     
-    public Attribute stats = new Attribute();
+    public Attribute stats;
     public Inventory inventory = new Inventory();
     public Money money = new Money();
     public Equipment equipment = new Equipment();
@@ -26,10 +26,10 @@ public class Player
     {
         Symbol = '¶';
         Name = name;
-        // if (Name == "Rogue") 
-        //     Symbol = '%';
         X = startX;
         Y = startY;
+
+        stats = new Attribute(equipment);
     }
 
     public void Move(int dx, int dy)

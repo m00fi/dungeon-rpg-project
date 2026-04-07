@@ -1,6 +1,6 @@
 namespace dungeonRPG.Items.Weapons;
 
-public class Spear : Weapon
+public class Spear : OneHandedWeapon
 {
     public override char Symbol => 'Î';
     public override string Name => "Spear";

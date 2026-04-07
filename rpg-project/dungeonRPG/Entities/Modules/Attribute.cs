@@ -1,13 +1,41 @@
+using dungeonRPG.Items.Weapons;
+
 namespace dungeonRPG.Entities.Modules;
 
 public class Attribute
 {
-    public int Strength { get; set; } = 10;
-    public int Dexterity { get; set; } = 10;
-    public int Health { get; set; } = 100;
-    public int Luck { get; set; } = 5;
-    public int Aggression { get; set; } = 5;
-    public int Wisdom { get; set; } = 5;
+    private readonly Equipment _equipment;
+    public Attribute(Equipment equipment)
+    {
+        _equipment = equipment;
+    }
+
+    public int BaseStrength { get; set; } = 10;
+    public int BaseDexterity { get; set; } = 10;
+    public int BaseHealth { get; set; } = 100;
+    public int BaseLuck { get; set; } = 5;
+    public int BaseAggression { get; set; } = 5;
+    public int BaseWisdom { get; set; } = 5;
+
+    public int Strength => BaseStrength + GetBonus(w => w.StrengthBonus);
+    public int Dexterity => BaseDexterity + GetBonus(w => w.DexterityBonus);
+    public int Health => BaseHealth + GetBonus(w => w.HealthBonus);
+    public int Luck => BaseLuck + GetBonus(w => w.LuckBonus);
+    public int Aggression => BaseAggression + GetBonus(w => w.AggressionBonus);
+    public int Wisdom => BaseWisdom + GetBonus(w => w.WisdomBonus);
+
+    private int GetBonus(Func<Weapon, int> statSelector)
+    {
+        int bonus = 0;
+        
+        if (_equipment.LeftHand != null) 
+            bonus += statSelector(_equipment.LeftHand);
+        
+        if (_equipment.RightHand != null && _equipment.RightHand != _equipment.LeftHand) 
+            bonus += statSelector(_equipment.RightHand);
+            
+        return bonus;
+    }
 
     public List<string> GetAttributes()
     {

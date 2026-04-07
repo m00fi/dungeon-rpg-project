@@ -1,6 +1,6 @@
 namespace dungeonRPG.Items.Weapons;
 
-public class Staff : Weapon
+public class Staff : OneHandedWeapon
 {
     public override char Symbol => 'ƪ';
     public override string Name => "Staff";

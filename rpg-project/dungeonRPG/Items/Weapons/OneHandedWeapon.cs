@@ -4,10 +4,10 @@ using dungeonRPG.Entities.Modules;
 
 namespace dungeonRPG.Items.Weapons;
 
-public abstract class TwoHandedWeapon : Weapon
+public abstract class OneHandedWeapon : Weapon
 {
     public override List<Weapon> EquipTo(Equipment equipment, Weapon actualWeapon)
     {
-        return equipment.EquipTwoHanded(actualWeapon);
+        return equipment.EquipOneHanded(actualWeapon);
     }
 }
