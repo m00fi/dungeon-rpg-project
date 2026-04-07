@@ -1,4 +1,5 @@
 using dungeonRPG.Dungeon.Cells;
+using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Input;
 using dungeonRPG.Items.Currencies;
 using dungeonRPG.Items.Others;
@@ -164,11 +165,14 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         if (_weaponsToPlace > 0) PlaceWeapons(_weaponsToPlace);
         if(_enemiesToPlace > 0) PlaceEnemies(_enemiesToPlace);
         
-        // DEBUG:
+        // FOR TESTING OF STAGE 3:
         _grid[1, 1] = new EmptyCell();
+        _grid[2, 2] = new EmptyCell();
+        
         _grid[1, 1].TryAddItem(new HeavyModifier(new Greataxe()));
         _grid[1, 1].TryAddItem(new UnluckyModifier(new StrongModifier(new Staff())));
-        
+        _grid[2, 2].TryAddItem(new StrongModifier(new StrongModifier(new Greataxe())));
+        _grid[2, 2].TryAddItem(new Greataxe());
 
         return new Room(_grid);
     }
@@ -353,8 +357,8 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                     switch (weaponType)
                     {
                         case 0: _grid[y, x].TryAddItem(new StrongModifier(new Staff())); break;
-                        case 1: _grid[y, x].TryAddItem(new StrongModifier(new Spear())); break;
-                        case 2: _grid[y, x].TryAddItem(new StrongModifier(new Greatbow())); break;
+                        case 1: _grid[y, x].TryAddItem(new HeavyModifier(new Spear())); break;
+                        case 2: _grid[y, x].TryAddItem(new UnluckyModifier(new Greatbow())); break;
                         case 3: _grid[y, x].TryAddItem(new StrongModifier(new Greataxe())); break;
                     }
                     placed++;
@@ -374,10 +378,22 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         {
             int x = _random.Next(Room.Width);
             int y = _random.Next(Room.Height);
+            int enemyType = _random.Next(3);
 
             if (_grid[y, x].CanHoldItems && _grid[y, x].Enemy == null)
             {
-                _grid[y, x].Enemy = new dungeonRPG.Entities.Enemies.Goblin(10, 10, 10); 
+                switch (enemyType)
+                {
+                    case 0:
+                        _grid[y, x].Enemy = new Goblin(100, 10, 20); 
+                        break;
+                    case 1:
+                        _grid[y, x].Enemy = new Bat(50, 2, 2); 
+                        break;
+                    case 2:
+                        _grid[y, x].Enemy = new EvilKnight(500, 15, 40); 
+                        break;
+                }
                 placed++;
             }
             safetyNet++;

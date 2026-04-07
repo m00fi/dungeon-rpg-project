@@ -10,16 +10,17 @@ public class Attribute
         _equipment = equipment;
     }
 
-    public int BaseStrength { get; set; } = 10;
-    public int BaseDexterity { get; set; } = 10;
-    public int BaseHealth { get; set; } = 100;
-    public int BaseLuck { get; set; } = 5;
-    public int BaseAggression { get; set; } = 5;
-    public int BaseWisdom { get; set; } = 5;
+    public static int BaseStrength { get; set; } = 10;
+    public static int BaseDexterity { get; set; } = 10;
+    public static int BaseHealth { get; set; } = 100;
+    public static int BaseLuck { get; set; } = 5;
+    public static int BaseAggression { get; set; } = 5;
+    public static int BaseWisdom { get; set; } = 5;
 
     public int Strength => BaseStrength + GetBonus(w => w.StrengthBonus);
     public int Dexterity => BaseDexterity + GetBonus(w => w.DexterityBonus);
-    public int Health => BaseHealth + GetBonus(w => w.HealthBonus);
+    public int Health { get; set; } = BaseHealth;
+
     public int Luck => BaseLuck + GetBonus(w => w.LuckBonus);
     public int Aggression => BaseAggression + GetBonus(w => w.AggressionBonus);
     public int Wisdom => BaseWisdom + GetBonus(w => w.WisdomBonus);

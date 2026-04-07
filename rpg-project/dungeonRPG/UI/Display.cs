@@ -90,7 +90,7 @@ public class Display
     {
         if (message != null)
         {
-            Console.BackgroundColor = ConsoleColor.Red;
+            Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(message);
             Console.ResetColor();

@@ -18,6 +18,7 @@ public abstract class Enemy
         Armor = armor;
         _random = new Random();
     }
+
     public virtual void TakeDamage(int damage)
     {
         int actualDamage = Math.Max(0, damage - Armor);

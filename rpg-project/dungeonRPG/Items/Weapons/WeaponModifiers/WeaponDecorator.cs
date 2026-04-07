@@ -22,4 +22,8 @@ public abstract class WeaponDecorator : Weapon
         return _weapon.EquipTo(equipment, actualWeapon);
     }
 
+    public override void Accept(Combat.IAttackVisitor visitor, Weapon statsSource)
+    {
+        _weapon.Accept(visitor, statsSource);
+    }
 }

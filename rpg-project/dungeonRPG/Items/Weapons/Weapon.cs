@@ -1,3 +1,4 @@
+using dungeonRPG.Combat;
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities.Modules;
 
@@ -40,6 +41,7 @@ public abstract class Weapon : IItem
         }
     }
     public abstract List<Weapon> EquipTo(Equipment equipment, Weapon actualWeapon);
+    public abstract void Accept(Combat.IAttackVisitor visitor, Weapon statsSource);
     
     public virtual string GetDescription()
     {
