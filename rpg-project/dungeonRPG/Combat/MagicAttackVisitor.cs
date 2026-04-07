@@ -1,4 +1,5 @@
 using dungeonRPG.Entities;
+using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items.Weapons;
 using dungeonRPG.Items.Weapons.WeaponCategories;
 
@@ -7,11 +8,11 @@ namespace dungeonRPG.Combat;
 public class MagicAttackVisitor : IAttackVisitor
 {
     private Player _player;
-    private dungeonRPG.Entities.Enemies.Enemy _enemy;
+    private Enemy _enemy;
     
     public string CombatMessage { get; private set; } = "";
 
-    public MagicAttackVisitor(Player player, dungeonRPG.Entities.Enemies.Enemy enemy)
+    public MagicAttackVisitor(Player player, Enemy enemy)
     {
         _player = player;
         _enemy = enemy;
@@ -33,8 +34,8 @@ public class MagicAttackVisitor : IAttackVisitor
 
     public void Visit(IMagicWeapon categoryToken, Weapon statsSource)
     {
-        int playerDamage = statsSource.Damage; // Magiczna bije normalnie
-        int playerDefense = _player.stats.Wisdom * 2; // Obrona zależy od Mądrości
+        int playerDamage = statsSource.Damage;
+        int playerDefense = _player.stats.Wisdom * 2;
         ResolveCombatExchange(playerDamage, playerDefense);
     }
 

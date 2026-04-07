@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using dungeonRPG.Dungeon.Cells;
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities;
@@ -90,17 +91,22 @@ public class Display
     {
         if (message != null)
         {
+            Console.Write("LOG:");
             Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(message);
             Console.ResetColor();
             
             int padding = ScreenWidth - 40 + SidePanelWidth - message.Length;
-            if (padding > 0) Console.WriteLine(new string('-', padding));
+            if (padding > 0) Console.WriteLine(new string('-', padding - 5));
         }
         else
         {
-            Console.WriteLine(new string('-', ScreenWidth - 40 + SidePanelWidth));
+            // Console.BackgroundColor = ConsoleColor.DarkRed;
+            // Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("LOG:");
+            // Console.ResetColor();
+            Console.WriteLine(new string('-', ScreenWidth - 40 + SidePanelWidth - 4));
         }
     }
 

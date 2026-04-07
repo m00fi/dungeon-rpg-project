@@ -385,13 +385,13 @@ public class DefaultDungeonBuilder : IDungeonBuilder
                 switch (enemyType)
                 {
                     case 0:
-                        _grid[y, x].Enemy = new Goblin(100, 10, 20); 
+                        _grid[y, x].Enemy = new Goblin(100, 10, 10); 
                         break;
                     case 1:
                         _grid[y, x].Enemy = new Bat(50, 2, 2); 
                         break;
                     case 2:
-                        _grid[y, x].Enemy = new EvilKnight(500, 15, 40); 
+                        _grid[y, x].Enemy = new EvilKnight(500, 15, 20); 
                         break;
                 }
                 placed++;

@@ -7,6 +7,9 @@ public class ExitGameHandler : BaseInputHandler
 {
     public override InputResult HandleInput(ConsoleKey key, Player player, Room room, List<ConsoleKey> activeKeys)
     {
+        if (player.stats.Health <= 0)
+            return new InputResult(true);
+        
         switch (key)
         {
             case ConsoleKey.Escape:

@@ -9,5 +9,5 @@ public class UnluckyModifier : WeaponDecorator
     }
     
     public override string Name => $"Unlucky {_weapon.Name}";
-    public override int LuckBonus => _weapon.LuckBonus - 25;
+    public override int LuckBonus => _weapon.LuckBonus - 10;
 }

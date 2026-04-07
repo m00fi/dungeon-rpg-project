@@ -1,4 +1,5 @@
 using dungeonRPG.Entities;
+using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items.Weapons;
 using dungeonRPG.Items.Weapons.WeaponCategories;
 
@@ -7,10 +8,10 @@ namespace dungeonRPG.Combat;
 public class NormalAttackVisitor : IAttackVisitor
 {
     private Player _player;
-    private dungeonRPG.Entities.Enemies.Enemy _enemy;
+    private Enemy _enemy;
     public string CombatMessage { get; private set; } = "";
 
-    public NormalAttackVisitor(Player player, dungeonRPG.Entities.Enemies.Enemy enemy)
+    public NormalAttackVisitor(Player player, Enemy enemy)
     {
         _player = player;
         _enemy = enemy;
