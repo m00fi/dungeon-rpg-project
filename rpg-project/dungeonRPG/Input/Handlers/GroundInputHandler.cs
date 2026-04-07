@@ -31,10 +31,10 @@ public class GroundInputHandler : BaseInputHandler
                 return new InputResult(false, result);
             
             case ConsoleKey.Y: 
-                return new InputResult(false, $"Open inventory [{KeyBinds.Map[GameAction.ToggleInventory]}] to unequip items.");
+                return new InputResult(false, $"Open inventory [{InventoryKeybinds.ToggleInventoryInfo}] to unequip items.");
             
             case ConsoleKey.Q:
-                return new InputResult(false, $"Press [{KeyBinds.Map[GameAction.ToggleInventory]}] to open inventory and select item to drop.");
+                return new InputResult(false, $"Press [{InventoryKeybinds.ToggleInventoryInfo}] to open inventory and select item to drop.");
                 
             default:
                 return base.HandleInput(key, player, room, activeKeys);

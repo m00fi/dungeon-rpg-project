@@ -13,7 +13,6 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     private List<string> _instructions;
     private Random _random;
     private List<ConsoleKey> _keys;
-    private List<GameAction> _actions;
 
     private int _roomsToAdd = 0;
     private bool _wantsStarterRoom = false;
@@ -50,8 +49,6 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         _keys = new List<ConsoleKey>();
         _random = new Random();
         _rooms = new List<Rectangle>();
-        
-        _actions = new List<GameAction>();
     }
 
     public void BuildEmpty() 
@@ -113,37 +110,34 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     private void AddSharedMovementInstructions()
     {
-        if (!_keys.Contains(ConsoleKey.W))
+        if (!_keys.Contains(MovementKeybinds.MoveUp))
         {
-            _keys.Add(ConsoleKey.W);
-            _keys.Add(ConsoleKey.A);
-            _keys.Add(ConsoleKey.S);
-            _keys.Add(ConsoleKey.D);
-            _keys.Add(ConsoleKey.I);
+            _keys.Add(MovementKeybinds.MoveUp);
+            _keys.Add(MovementKeybinds.MoveLeft);
+            _keys.Add(MovementKeybinds.MoveDown);
+            _keys.Add(MovementKeybinds.MoveRight);
+            _keys.Add(InventoryKeybinds.ToggleInventory);
             
-            _instructions.Add($" [{KeyBinds.Map[GameAction.MoveUp]}" +
-                              $"{KeyBinds.Map[GameAction.MoveLeft]}" +
-                              $"{KeyBinds.Map[GameAction.MoveDown]}" +
-                              $"{KeyBinds.Map[GameAction.MoveRight]}]\t- Move");
+            _instructions.Add($" [{MovementKeybinds.MovementInfo}]\t- Move");
             
-            _instructions.Add($" [{KeyBinds.Map[GameAction.ToggleInventory]}]\t- Switch between inventory/ground mode");
+            _instructions.Add($" [{InventoryKeybinds.ToggleInventoryInfo}]\t- Switch between inventory/ground mode");
         }
     }
     
     private void AddSharedItemInstructions()
     {
-        if (!_keys.Contains(ConsoleKey.E))
+        if (!_keys.Contains(InventoryKeybinds.Interact))
         {
-            _keys.Add(ConsoleKey.E);
-            _keys.Add(ConsoleKey.Q);
-            _keys.Add(ConsoleKey.Y);
-            _keys.Add(ConsoleKey.UpArrow);
-            _keys.Add(ConsoleKey.DownArrow);
+            _keys.Add(InventoryKeybinds.Interact);
+            _keys.Add(InventoryKeybinds.DropItem);
+            _keys.Add(InventoryKeybinds.UnequipAll);
+            _keys.Add(InventoryKeybinds.SelectPrev);
+            _keys.Add(InventoryKeybinds.SelectNext);
             
-            _instructions.Add($" [{KeyBinds.Map[GameAction.Interact]}]\t- Pick up / use (equip) selected item");
-            _instructions.Add($" [{KeyBinds.Map[GameAction.DropItem]}]\t- Drop selected item");
-            _instructions.Add($" [{KeyBinds.Map[GameAction.DropItem]}]\t- Unequip items from hands");
-            _instructions.Add(" [↑/↓]\t- Select item in inventory/ground list");
+            _instructions.Add($" [{InventoryKeybinds.InteractInfo}]\t- Pick up / use (equip) selected item");
+            _instructions.Add($" [{InventoryKeybinds.DropItemInfo}]\t- Drop selected item");
+            _instructions.Add($" [{InventoryKeybinds.UnequipAllInfo}]\t- Unequip items from hands");
+            _instructions.Add($" [{InventoryKeybinds.SelectInfo}]\t- Select item in inventory/ground list");
         }
     }
 
@@ -179,10 +173,10 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     public List<string> GetInstructions()
     {
-        if (!_keys.Contains(ConsoleKey.Escape))
+        if (!_keys.Contains(MovementKeybinds.ExitGame))
         {
-            _keys.Add(ConsoleKey.Escape);
-            _instructions.Add(" [ESC]\t- Exit game");
+            _keys.Add(MovementKeybinds.ExitGame);
+            _instructions.Add($" [{MovementKeybinds.ExitInfo}]\t- Exit game");
         }
         
         return _instructions;
