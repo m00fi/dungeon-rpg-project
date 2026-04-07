@@ -1,3 +1,4 @@
+using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items;
 
 namespace dungeonRPG.Entities;
@@ -17,6 +18,9 @@ public class Player
     public Inventory inventory = new Inventory();
     public Money money = new Money();
     public Equipment equipment = new Equipment();
+
+    public Enemy? ActiveEnemy { get; set; } = null;
+    public bool IsInCombat => ActiveEnemy != null;
 
     public int SelectedItemIndex { get; private set; } = 0;
     public bool IsInventoryActive { get; private set; } = false;

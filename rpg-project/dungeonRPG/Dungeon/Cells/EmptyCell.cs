@@ -6,6 +6,7 @@ public class EmptyCell : Cell
 {
     public override bool CanHoldItems => true;
     public List<IItem> Items { get; private set; } = new();
+    
     public override char GetSymbol()
     {
         if (Enemy != null && !Enemy.IsDead)
@@ -20,9 +21,11 @@ public class EmptyCell : Cell
     public override bool Enter(Player player)
     {
         if (Enemy != null && !Enemy.IsDead)
-            return false;
+        {
+            player.ActiveEnemy = Enemy;
+        }
         
-        return true;    
+        return true;
     }
 
     public override bool TryAddItem(IItem item)

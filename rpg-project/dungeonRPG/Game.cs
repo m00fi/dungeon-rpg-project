@@ -53,9 +53,11 @@ public class Game
         
         _display = new Display();
         _player = new Player("m0fi",0, 0);
+
+        _inputHandler = new ExitGameHandler();
         
-        _inputHandler = new InventoryInputHandler();
-        _inputHandler.SetNext(new GroundInputHandler())
+        _inputHandler.SetNext(new CombatInputHandler()).SetNext(new InventoryInputHandler())
+            .SetNext(new GroundInputHandler())
             .SetNext(new MovementInputHandler())
             .SetNext(new GlobalActionHandler())
             .SetNext(new UnboundKeyHandler());

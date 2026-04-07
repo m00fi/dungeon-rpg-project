@@ -20,9 +20,6 @@ public class GlobalActionHandler : BaseInputHandler
                 player.TryUnequipAll(room); 
                 return new InputResult();
                 
-            case ConsoleKey.Escape: 
-                return new InputResult(true);
-                
             default: 
                 return base.HandleInput(key, player, room, activeKeys);
         }

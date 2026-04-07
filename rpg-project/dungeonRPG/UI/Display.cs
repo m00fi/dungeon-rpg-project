@@ -14,7 +14,11 @@ public class Display
         Console.SetCursorPosition(0, 0);
 
         RenderMapAndSidePanel(room, player);
-        RenderGroundItems(room, player);
+        if (player.IsInCombat)
+            RenderCombatMenu(player);
+        else
+            RenderGroundItems(room, player);
+        
         RenderMessageBar(message);
         RenderInstructions(instructions);
         
@@ -59,6 +63,27 @@ public class Display
         {
             RenderPopulatedItemList(itemDescriptions, player.SelectedItemIndex, player.IsInventoryActive, maxVisibleGround);
         }
+    }
+    
+    private void RenderCombatMenu(Player player)
+    {
+        var enemy = player.ActiveEnemy;
+        if (enemy == null) return;
+
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        Console.ForegroundColor = ConsoleColor.White;
+
+        Console.Write($"BATTLE:");
+        Console.ResetColor();
+        //Console.WriteLine($"".PadRight(ScreenWidth));
+        Console.Write($" ({enemy.Symbol}) {enemy.Name}");
+        Console.WriteLine($" | HP: {enemy.Health} | ATK: {enemy.Attack} | DEF: {enemy.Armor}".PadRight(ScreenWidth));
+        Console.WriteLine(new string(' ', ScreenWidth - 40 + SidePanelWidth));
+        Console.WriteLine(new string(' ', ScreenWidth - 40 + SidePanelWidth));
+        Console.WriteLine("Choose your attack:".PadRight(ScreenWidth));
+        Console.WriteLine(" [1] Normal Attack".PadRight(ScreenWidth));
+        Console.WriteLine(" [2] Stealth Attack".PadRight(ScreenWidth));
+        Console.WriteLine(" [3] Magic Attack".PadRight(ScreenWidth));
     }
 
     private void RenderMessageBar(string? message)
@@ -132,7 +157,7 @@ public class Display
                 Console.ForegroundColor = ConsoleColor.Black;
             }
 
-            Console.Write(line.Text.PadRight(40)); 
+            Console.Write(line.Text.PadRight(SidePanelWidth)); 
             Console.ResetColor();
         }
         else
@@ -259,7 +284,7 @@ public class Display
             bool isSelected = player.IsInventoryActive;
             string prefix = isSelected ? "> " : "  ";
             Add(prefix + "~empty", isSelected);
-            for (int i = 1; i < maxVisible; i++) Add(new string(' ', ScreenWidth)); 
+            for (int i = 1; i < maxVisible; i++) Add(new string(' ', SidePanelWidth)); 
         }
         else
         {
@@ -280,7 +305,7 @@ public class Display
                 }
                 else
                 {
-                    Add(new string(' ', ScreenWidth)); 
+                    Add(new string(' ', SidePanelWidth)); 
                 }
             }
         }
