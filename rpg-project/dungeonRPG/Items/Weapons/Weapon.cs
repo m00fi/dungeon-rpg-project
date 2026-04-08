@@ -41,7 +41,7 @@ public abstract class Weapon : IItem
         }
     }
     public abstract List<Weapon> EquipTo(Equipment equipment, Weapon actualWeapon);
-    public abstract void Accept(Combat.IAttackVisitor visitor, Weapon statsSource);
+    public abstract void Accept(IAttackVisitor visitor, Weapon statsSource);
     
     public virtual string GetDescription()
     {

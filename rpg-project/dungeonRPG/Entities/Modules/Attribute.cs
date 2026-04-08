@@ -42,7 +42,7 @@ public class Attribute
     {
         return new List<string>
         {
-            $"Health: {Health}",
+            $"Health: {Math.Max(0, Health)}/{BaseHealth}",
             $"Strength: {Strength}",
             $"Dexterity: {Dexterity}",
             $"Luck: {Luck}",

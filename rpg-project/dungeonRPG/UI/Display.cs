@@ -26,8 +26,6 @@ public class Display
         for (int i = 0; i < 3; i++) Console.WriteLine(new string(' ', ScreenWidth));
     }
 
-    // Main display methods
-
     private void RenderMapAndSidePanel(Room room, Player player)
     {
         List<(string Text, bool Highlight)> sidePanel = GenerateSidePanel(room, player);
@@ -119,8 +117,6 @@ public class Display
         }
     }
 
-    // Helper methods (row rendering)
-
     private void RenderMapRow(int y, int mapDisplayHeight, int mapDisplayWidth, Room room, Player player)
     {
         if (y == 0 || y == mapDisplayHeight - 1)
@@ -172,8 +168,6 @@ public class Display
             Console.Write(new string(' ', 40));
         }
     }
-
-    // Helper methods (item lists) 
 
     private void RenderEmptyItemList(bool isInventoryActive, int maxVisibleGround)
     {
@@ -254,8 +248,6 @@ public class Display
             Console.WriteLine(new string(' ', ScreenWidth)); 
         }
     }
-
-    // Side panel methods
 
     public string Separator() => new string('-', SidePanelWidth);
 
