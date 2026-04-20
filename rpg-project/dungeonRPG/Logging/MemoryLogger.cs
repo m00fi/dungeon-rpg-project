@@ -2,6 +2,7 @@ namespace dungeonRPG.Logging;
 
 public class MemoryLogger : ILogger
 {
+    public string? LogFilePath => null;
     private readonly List<string> _logs = new List<string>();
 
     public void Log(string message)

@@ -1,5 +1,6 @@
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Input.Handlers;
 
@@ -12,9 +13,12 @@ public class ExitGameHandler : BaseInputHandler
             case ConsoleKey.Escape:
                 return new InputResult(true);
         }
-        
+
         if (player.stats.Health <= 0)
-            return new InputResult(false, "YOU DIED! GAME OVER. Press [ESC] to quit.");
+        {
+            string fileName = GameLogger.CurrentLogFilePath ?? "unknown";
+            return new InputResult(false, $"YOU DIED! GAME OVER. Logs saved to: {fileName}. Press [ESC] to quit.");
+        }
         
         return base.HandleInput(key, player, room, activeKeys);
     }

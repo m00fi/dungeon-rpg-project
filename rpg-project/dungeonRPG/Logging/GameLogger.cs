@@ -3,6 +3,7 @@ namespace dungeonRPG.Logging;
 public static class GameLogger
 {
     private static ILogger _currentLogger = new MemoryLogger(); 
+    public static string? CurrentLogFilePath => _currentLogger.LogFilePath;
 
     public static void Initialize(ILogger logger)
     {

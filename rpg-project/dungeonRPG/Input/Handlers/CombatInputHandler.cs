@@ -1,6 +1,7 @@
 using dungeonRPG.Combat;
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Input.Handlers;
 
@@ -51,7 +52,9 @@ public class CombatInputHandler : BaseInputHandler
             }
             else if (player.stats.Health <= 0)
             {
-                return new InputResult(false, "YOU DIED! GAME OVER. Press [ESC] to quit."); 
+                GameLogger.Log("Player died.");
+                string fileName = GameLogger.CurrentLogFilePath ?? "unknown";
+                return new InputResult(false, $"YOU DIED! GAME OVER. Logs saved to: {fileName}. Press [ESC] to quit.");
             }
 
             return new InputResult(false, resultMessage);
