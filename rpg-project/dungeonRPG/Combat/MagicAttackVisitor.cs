@@ -2,6 +2,7 @@ using dungeonRPG.Entities;
 using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items.Weapons;
 using dungeonRPG.Items.Weapons.WeaponCategories;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Combat;
 
@@ -54,6 +55,8 @@ public class MagicAttackVisitor : IAttackVisitor
         if (_enemy.IsDead)
         {
             CombatMessage = $"Magic Spell! Dealt {actualDamageToEnemy} DMG. {_enemy.Name} defeated!";
+            GameLogger.Log($"Player dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
+            GameLogger.Log($"Player defeated {_enemy.Name}.");
             return;
         }
 
@@ -61,5 +64,7 @@ public class MagicAttackVisitor : IAttackVisitor
         _player.stats.Health -= actualDamageToPlayer;
 
         CombatMessage = $"Magic Spell! Dealt {actualDamageToEnemy} DMG. Received {actualDamageToPlayer} DMG!";
+        GameLogger.Log($"Player dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
+        GameLogger.Log($"Player received {actualDamageToPlayer} DMG from {_enemy.Name}.");
     }
 }

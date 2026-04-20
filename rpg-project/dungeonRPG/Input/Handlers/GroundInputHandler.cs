@@ -14,6 +14,7 @@ public class GroundInputHandler : BaseInputHandler
         
         if(!activeKeys.Contains(key))
             return base.HandleInput(key, player, room, activeKeys);
+        
         string? result = null;
         
         switch (key)

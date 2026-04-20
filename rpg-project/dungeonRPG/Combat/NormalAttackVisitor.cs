@@ -2,6 +2,7 @@ using dungeonRPG.Entities;
 using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items.Weapons;
 using dungeonRPG.Items.Weapons.WeaponCategories;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Combat;
 
@@ -56,6 +57,8 @@ public class NormalAttackVisitor : IAttackVisitor
         if (_enemy.IsDead)
         {
             CombatMessage = $"Normal Attack! You dealt {actualDamageToEnemy} DMG. {_enemy.Name} defeated!";
+            GameLogger.Log($"Player dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
+            GameLogger.Log($"Player defeated {_enemy.Name}.");
             return;
         }
 
@@ -63,5 +66,7 @@ public class NormalAttackVisitor : IAttackVisitor
         _player.stats.Health -= actualDamageToPlayer;
 
         CombatMessage = $"Normal Attack! You dealt {actualDamageToEnemy} DMG. Received {actualDamageToPlayer} DMG!";
+        GameLogger.Log($"Player dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
+        GameLogger.Log($"Player received {actualDamageToPlayer} DMG from {_enemy.Name}.");
     }
 }

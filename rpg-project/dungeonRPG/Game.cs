@@ -40,7 +40,7 @@ public class Game
                      .SetNext(new GlobalActionHandler())
                      .SetNext(new UnboundKeyHandler());
     }
-    public Game(IDungeonGenerationStrategy strategy, string PlayerName,  string LogDirectory)
+    public Game(IDungeonGenerationStrategy strategy, string playerName,  string logDirectory)
     {
         IDungeonBuilder builder = new DefaultDungeonBuilder();
         strategy.Generate(builder);
@@ -52,11 +52,12 @@ public class Game
         _menu = new Menu(_instructions);
         
         _display = new Display();
-        _player = new Player(PlayerName,0, 0);
+        _player = new Player(playerName,0, 0);
 
         _inputHandler = new ExitGameHandler();
         
-        _inputHandler.SetNext(new CombatInputHandler()).SetNext(new InventoryInputHandler())
+        _inputHandler.SetNext(new CombatInputHandler())
+            .SetNext(new InventoryInputHandler())
             .SetNext(new GroundInputHandler())
             .SetNext(new MovementInputHandler())
             .SetNext(new GlobalActionHandler())

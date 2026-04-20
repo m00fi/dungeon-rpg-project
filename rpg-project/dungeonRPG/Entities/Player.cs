@@ -1,5 +1,6 @@
 using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Entities;
 using Dungeon;
@@ -24,6 +25,8 @@ public class Player
 
     public int SelectedItemIndex { get; private set; } = 0;
     public bool IsInventoryActive { get; private set; } = false;
+    public bool IsInstructionsOpen { get; private set; } = false;
+    public bool IsLogsOpen { get; private set; } = false;
     public int SelectedInventoryIndex { get; private set; } = 0;
     
     public Player(string name, int startX, int startY)
@@ -70,6 +73,8 @@ public class Player
         if (item != null)
         {
             item.PickUp(this);
+            GameLogger.Log($"Player picked up {item.Name}.");
+            
             if (SelectedItemIndex >= currCell.GetItemsCount() && SelectedItemIndex > 0)
             {
                 SelectedItemIndex--;
@@ -106,6 +111,16 @@ public class Player
 
         if (IsInventoryActive) SelectedInventoryIndex = 0;
         else SelectedItemIndex = 0;
+    }
+
+    public void ToggleInstructions()
+    {
+        IsInstructionsOpen = !IsInstructionsOpen;
+    }
+
+    public void ToggleLogs()
+    {
+        IsLogsOpen = !IsLogsOpen;
     }
     
     public void SelectNextItem(Room room)

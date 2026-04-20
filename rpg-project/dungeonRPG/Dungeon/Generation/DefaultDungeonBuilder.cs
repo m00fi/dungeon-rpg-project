@@ -175,6 +175,12 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     {
         if (!_keys.Contains(MovementKeybinds.ExitGame))
         {
+            _keys.Add(ConsoleKey.J);
+            _instructions.Add($" [{ConsoleKey.J}]\t- Show/close all logs");
+            
+            _keys.Add(ConsoleKey.H);
+            _instructions.Add($" [{ConsoleKey.H}]\t- Open/close Help menu");
+            
             _keys.Add(MovementKeybinds.ExitGame);
             _instructions.Add($" [{MovementKeybinds.ExitInfo}]\t- Exit game");
         }

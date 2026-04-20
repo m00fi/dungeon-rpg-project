@@ -1,4 +1,5 @@
 using dungeonRPG.Items.Weapons;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Entities.Modules;
 
@@ -28,10 +29,11 @@ public class Equipment
         }
         else
         {
-
             unequipped.Add(RightHand);
             RightHand = weapon;
         }
+        
+        GameLogger.Log($"Player equipped {weapon.Name}.");
 
         return unequipped;
     }
@@ -52,6 +54,8 @@ public class Equipment
         LeftHand = weapon;
         RightHand = weapon;
 
+        GameLogger.Log($"Player equipped {weapon.Name}.");
+        
         return unequipped;
     }
     

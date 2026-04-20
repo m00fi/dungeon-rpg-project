@@ -15,6 +15,14 @@ public class GlobalActionHandler : BaseInputHandler
             case ConsoleKey.I: 
                 player.ToggleInventory(); 
                 return new InputResult();
+            
+            case ConsoleKey.H:
+                player.ToggleInstructions();
+                return new InputResult();
+            
+            case ConsoleKey.J:
+                player.ToggleLogs();
+                return new InputResult();
                 
             case ConsoleKey.Y: 
                 player.TryUnequipAll(room); 

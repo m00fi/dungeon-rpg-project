@@ -2,6 +2,7 @@ using System.Reflection.Metadata.Ecma335;
 using dungeonRPG.Dungeon.Cells;
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.UI;
 
@@ -14,6 +15,12 @@ public class Display
     {
         Console.SetCursorPosition(0, 0);
 
+        if (player.IsLogsOpen)
+        {
+            RenderAllLogs();
+            return;
+        }
+
         RenderMapAndSidePanel(room, player);
         if (player.IsInCombat)
             RenderCombatMenu(player);
@@ -21,9 +28,20 @@ public class Display
             RenderGroundItems(room, player);
         
         RenderMessageBar(message);
-        RenderInstructions(instructions);
         
-        for (int i = 0; i < 3; i++) Console.WriteLine(new string(' ', ScreenWidth));
+        int cleanupIteration = 11;
+        if (player.IsInstructionsOpen)
+        {
+            int instrucitonCount = RenderInstructions(instructions);
+            cleanupIteration -= instrucitonCount;
+        }
+        else
+        {
+            int logCount = RenderLastLogs(5);
+            cleanupIteration -= logCount;
+        }
+        
+        for (int i = 0; i < cleanupIteration; i++) Console.WriteLine(new string(' ', ScreenWidth));
     }
 
     private void RenderMapAndSidePanel(Room room, Player player)
@@ -109,11 +127,46 @@ public class Display
         }
     }
 
-    private void RenderInstructions(List<string> instructions)
+    private int RenderInstructions(List<string> instructions)
     {
         foreach (var inst in instructions)
         {
-            Console.WriteLine(inst.PadRight(ScreenWidth));
+            string safeInst = inst;
+
+            if (inst.Contains('\t'))
+            {
+                var parts = inst.Split('\t');
+                safeInst = $"{parts[0].PadRight(8)}{parts[1]}";
+            }
+            Console.WriteLine(safeInst.PadRight(ScreenWidth));
+        }
+
+        return instructions.Count;
+    }
+
+    private int RenderLastLogs(int count)
+    {
+        Console.WriteLine("LAST LOGS:".PadRight(ScreenWidth));
+        var logs = GameLogger.GetRecentLogs(count);
+
+        foreach (var log in logs)
+        {
+            Console.WriteLine(log.PadRight(ScreenWidth));
+        }
+        
+        return logs.Count;
+    }
+
+    private void RenderAllLogs()
+    {
+        Console.Clear();
+        Console.WriteLine("ALL LOGS (PRESS [J] TO CLOSE):".PadRight(ScreenWidth));
+        
+        var logs = GameLogger.GetAllLogs();
+        
+        foreach (var log in logs)
+        {
+            Console.WriteLine(log.PadRight(ScreenWidth));
         }
     }
 
