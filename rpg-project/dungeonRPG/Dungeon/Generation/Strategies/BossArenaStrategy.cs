@@ -10,5 +10,6 @@ public class BossArenaStrategy : IDungeonGenerationStrategy
         dBuilder.AddWeapons();
         dBuilder.AddStarterRoom();
         dBuilder.AddCorridors();
+        dBuilder.AddEnemies(20);
     }
 }

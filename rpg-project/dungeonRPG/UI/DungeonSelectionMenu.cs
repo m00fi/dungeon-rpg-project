@@ -1,10 +1,11 @@
 using dungeonRPG.Dungeon.Generation.Strategies;
+using dungeonRPG.Themes;
 
 namespace dungeonRPG.UI;
 
 public class DungeonSelectionMenu
 {
-    public IDungeonGenerationStrategy Display()
+    public IThemeFactory Display()
     {
         Console.CursorVisible = false;
         Console.Clear();
@@ -16,33 +17,22 @@ public class DungeonSelectionMenu
         Console.ResetColor();
         
         Console.WriteLine("Select a dungeon type:");
-        Console.WriteLine("1. Default Terrain");
-        Console.WriteLine("2. Boss Arena");
-        Console.WriteLine("3. Random Room Maze");
-        Console.WriteLine("4. Field with Items");
-        Console.WriteLine("5. Random Corridor Maze");
-        
+        Console.WriteLine("1. Cursed Castle");
+        Console.WriteLine("2. Crimson Catacombs");
+        Console.WriteLine("3. Jungle Labyrinth");
+
         var choice = Console.ReadKey(true).Key;
-        IDungeonGenerationStrategy strategy = new RandomRoomMazeStrategy();
 
         switch (choice)
         {
             case ConsoleKey.D1:
-                strategy = new DefaultTerrainStrategy(); 
-                break;
-            case ConsoleKey.D2: 
-                strategy = new BossArenaStrategy(); 
-                break;
-            case ConsoleKey.D3: 
-                break;
-            case ConsoleKey.D4:
-                strategy = new FieldWithItemsStrategy();
-                break;
-            case ConsoleKey.D5:
-                strategy = new RandomCorridorMazeStrategy();
-                break;
+                return new CursedCastleThemeFactory();
+            case ConsoleKey.D2:
+                return new CrimsonThemeFactory();
+            case ConsoleKey.D3:
+                return new JungleMazeThemeFactory();
+            default:
+                return new CursedCastleThemeFactory();
         }
-
-        return strategy;
     }
 }

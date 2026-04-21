@@ -1,9 +1,12 @@
 using dungeonRPG.Dungeon.Cells;
 using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Input;
+using dungeonRPG.Items;
 using dungeonRPG.Items.Currencies;
 using dungeonRPG.Items.Others;
 using dungeonRPG.Items.Weapons;
+using dungeonRPG.Themes;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Dungeon.Generation;
 
@@ -21,6 +24,8 @@ public class DefaultDungeonBuilder : IDungeonBuilder
     private int _weaponsToPlace = 0;
     private (int w, int h)? _centralRoomSize = null;
     private int _enemiesToPlace = 0;
+    
+    private readonly IThemeFactory _theme;
 
     private class Rectangle
     {
@@ -42,8 +47,9 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     private List<Rectangle> _rooms;
 
-    public DefaultDungeonBuilder()
+    public DefaultDungeonBuilder(IThemeFactory theme)
     {
+        _theme = theme;
         _grid = new Cell[Room.Height, Room.Width];
         _instructions = new List<string>();
         _keys = new List<ConsoleKey>();
@@ -143,30 +149,17 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
     public Room GetResult()
     {
-        if (_centralRoomSize.HasValue)
-            GenerateCentralRoom(_centralRoomSize.Value.w, _centralRoomSize.Value.h);
-
-        if (_wantsStarterRoom)
-            GenerateStarterRoom();
-
-        if (_wantsCorridors)
-            GenerateMaze();
-        
-        if (_roomsToAdd > 0)
-            GenerateRooms(_roomsToAdd);
+        if (_centralRoomSize.HasValue) GenerateCentralRoom(_centralRoomSize.Value.w, _centralRoomSize.Value.h);
+        if (_wantsStarterRoom) GenerateStarterRoom();
+        if (_wantsCorridors) GenerateMaze();
+        if (_roomsToAdd > 0) GenerateRooms(_roomsToAdd);
 
         if (_itemsToPlace > 0) PlaceItems(_itemsToPlace);
         if (_weaponsToPlace > 0) PlaceWeapons(_weaponsToPlace);
-        if(_enemiesToPlace > 0) PlaceEnemies(_enemiesToPlace);
+        if (_enemiesToPlace > 0) PlaceEnemies(_enemiesToPlace);
         
-        // FOR TESTING OF STAGE 3:
-        _grid[1, 1] = new EmptyCell();
-        _grid[2, 2] = new EmptyCell();
-        
-        _grid[1, 1].TryAddItem(new HeavyModifier(new Greataxe()));
-        _grid[1, 1].TryAddItem(new UnluckyModifier(new StrongModifier(new Staff())));
-        _grid[2, 2].TryAddItem(new StrongModifier(new StrongModifier(new Greataxe())));
-        _grid[2, 2].TryAddItem(new Greataxe());
+        var artifact = _theme.CreateArtifact();
+        PlaceSingleItem(artifact);
 
         return new Room(_grid);
     }
@@ -335,6 +328,23 @@ public class DefaultDungeonBuilder : IDungeonBuilder
             safetyNet++;
         }
     }
+    
+    private void PlaceSingleItem(IItem item)
+    {
+        int safetyNet = 0;
+        while (safetyNet < 1000)
+        {
+            int x = _random.Next(Room.Width);
+            int y = _random.Next(Room.Height);
+
+            if (_grid[y, x].CanHoldItems && _grid[y,x].ItemCount == 0 && _grid[y, x].Enemy == null)
+            {
+                _grid[y, x].TryAddItem(item);
+                break;
+            }
+            safetyNet++;
+        }
+    }
 
     private void PlaceWeapons(int count)
     {
@@ -348,22 +358,9 @@ public class DefaultDungeonBuilder : IDungeonBuilder
 
             if (_grid[y, x].CanHoldItems)
             {
-                int currentGridWeaponCount = _random.Next(1, 4);
-                int currentGridPlaced = 0;
-                
-                while (currentGridWeaponCount > currentGridPlaced && placed < count)
-                {
-                    int weaponType = _random.Next(4);
-                    switch (weaponType)
-                    {
-                        case 0: _grid[y, x].TryAddItem(new StrongModifier(new Staff())); break;
-                        case 1: _grid[y, x].TryAddItem(new HeavyModifier(new Spear())); break;
-                        case 2: _grid[y, x].TryAddItem(new UnluckyModifier(new Greatbow())); break;
-                        case 3: _grid[y, x].TryAddItem(new StrongModifier(new Greataxe())); break;
-                    }
-                    placed++;
-                    currentGridPlaced++;
-                }
+                var newWeapon = _theme.GetRandomWeapon(_random);
+                _grid[y, x].TryAddItem(newWeapon);
+                placed++;
             }
             safetyNet++;
         }
@@ -378,22 +375,11 @@ public class DefaultDungeonBuilder : IDungeonBuilder
         {
             int x = _random.Next(Room.Width);
             int y = _random.Next(Room.Height);
-            int enemyType = _random.Next(3);
 
             if (_grid[y, x].CanHoldItems && _grid[y, x].Enemy == null)
             {
-                switch (enemyType)
-                {
-                    case 0:
-                        _grid[y, x].Enemy = new Goblin(100, 10, 10); 
-                        break;
-                    case 1:
-                        _grid[y, x].Enemy = new Bat(50, 2, 2); 
-                        break;
-                    case 2:
-                        _grid[y, x].Enemy = new EvilKnight(500, 15, 20); 
-                        break;
-                }
+                var newEnemy = _theme.GetRandomEnemy(_random);
+                _grid[y, x].Enemy = newEnemy; 
                 placed++;
             }
             safetyNet++;

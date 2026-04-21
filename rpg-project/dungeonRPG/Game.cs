@@ -4,6 +4,7 @@ using dungeonRPG.Dungeon.Generation.Strategies;
 using dungeonRPG.Entities;
 using dungeonRPG.Input;
 using dungeonRPG.Input.Handlers;
+using dungeonRPG.Themes;
 
 namespace dungeonRPG;
 
@@ -18,11 +19,14 @@ public class Game
     private readonly List<ConsoleKey> _activeKeys;
     private readonly Menu _menu;
     private readonly IInputHandler _inputHandler;
+    private readonly IThemeFactory _theme;
     
     public Game()
     {
-        IDungeonGenerationStrategy strategy = new RandomRoomMazeStrategy();
-        IDungeonBuilder builder = new DefaultDungeonBuilder();
+        _theme = new CursedCastleThemeFactory();
+        
+        IDungeonBuilder builder = new DefaultDungeonBuilder(_theme);
+        var strategy = _theme.GetGenerationStrategy();
         strategy.Generate(builder);
 
         _room = builder.GetResult();
@@ -40,9 +44,10 @@ public class Game
                      .SetNext(new GlobalActionHandler())
                      .SetNext(new UnboundKeyHandler());
     }
-    public Game(IDungeonGenerationStrategy strategy, string playerName,  string logDirectory)
+    public Game(IThemeFactory theme, string playerName,  string logDirectory)
     {
-        IDungeonBuilder builder = new DefaultDungeonBuilder();
+        IDungeonBuilder builder = new DefaultDungeonBuilder(theme);
+        var strategy = theme.GetGenerationStrategy();
         strategy.Generate(builder);
     
         _room = builder.GetResult();
@@ -62,11 +67,12 @@ public class Game
             .SetNext(new MovementInputHandler())
             .SetNext(new GlobalActionHandler())
             .SetNext(new UnboundKeyHandler());
+        _theme = theme;
     }
 
     public void DisplayMenu()
     {
-        _menu.Display();
+        _menu.Display(_theme);
     }
     
     public void Run()

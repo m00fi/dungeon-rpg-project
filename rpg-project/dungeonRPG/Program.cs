@@ -16,11 +16,12 @@ var compLog = new CompositeLogger(memLog, fileLog);
 GameLogger.Initialize(compLog);
 GameLogger.Log($"Game started by {config.PlayerName}.");
 
-Console.ReadKey();
+// For warning viewing
+// Console.ReadKey();
 
 var dungeonMenu = new DungeonSelectionMenu();
-var strategy = dungeonMenu.Display();
-var game = new Game(strategy, config.PlayerName, config.LogDirectory);
+var theme = dungeonMenu.Display();
+var game = new Game(theme, config.PlayerName, config.LogDirectory);
 
 game.DisplayMenu();
 game.Run();

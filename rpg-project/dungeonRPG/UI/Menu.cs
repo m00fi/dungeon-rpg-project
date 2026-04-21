@@ -1,3 +1,5 @@
+using dungeonRPG.Themes;
+
 namespace dungeonRPG.UI;
 
 public class Menu
@@ -8,7 +10,7 @@ public class Menu
     {
         _instructions = instructions;
     }
-    public void Display()
+    public void Display(IThemeFactory theme)
     {
         Console.Clear();
         string logo = "'Rogue (1980)'-like Dungeon RPG game, Michał Chrostowski\n";
@@ -37,6 +39,11 @@ public class Menu
             }
         }
         
+        Console.WriteLine();
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(theme.GetMessage());
+        Console.ResetColor();
         Console.WriteLine();
         
         Console.Write("Press [ENTER] to enter the dungeon...");

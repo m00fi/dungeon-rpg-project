@@ -13,6 +13,7 @@ public abstract class Cell
     public abstract bool Enter(Player player);
 
     public virtual bool TryAddItem(IItem item) => false;
+    public virtual int ItemCount => 0;
 
     public virtual IItem? PopItem() => null;
     public virtual string? GetTopItemName() => null;

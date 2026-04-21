@@ -6,7 +6,7 @@ public class EmptyCell : Cell
 {
     public override bool CanHoldItems => true;
     public List<IItem> Items { get; private set; } = new();
-    
+    public override int ItemCount => Items.Count;
     public override char GetSymbol()
     {
         if (Enemy != null && !Enemy.IsDead)
