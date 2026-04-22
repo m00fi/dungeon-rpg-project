@@ -11,4 +11,10 @@
       <Folder Include="Logs\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Config\game_config.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
