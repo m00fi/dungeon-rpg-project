@@ -16,7 +16,7 @@ public class DungeonSelectionMenu
         Console.WriteLine(logo);
         Console.ResetColor();
         
-        Console.WriteLine("Select dungeon theme:");
+        Console.WriteLine("Select a dungeon theme:");
         Console.WriteLine("1. Cursed Castle");
         Console.WriteLine("2. Crimson Catacombs");
         Console.WriteLine("3. Jungle Labyrinth");
