@@ -20,7 +20,7 @@ public class CrimsonThemeFactory : IThemeFactory
     public Enemy GetRandomEnemy(Random random)
     {
         int roll = random.Next(0, 3);
-        return roll switch {0 => new EyeOfCthulu(), 1 => new TheTwins(), _ => new FleshGolem()};
+        return roll switch {0 => new EyeOfCthulhu(), 1 => new TheTwins(), _ => new FleshGolem()};
     }
 
     public Weapon GetRandomWeapon(Random random)
