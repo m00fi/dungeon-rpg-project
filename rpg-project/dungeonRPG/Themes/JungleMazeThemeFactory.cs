@@ -2,11 +2,16 @@ using dungeonRPG.Dungeon.Generation.Strategies;
 using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items.Artifacts;
 using dungeonRPG.Items.Weapons;
+using dungeonRPG.Systems.Factions;
+using dungeonRPG.Systems.Observers;
 
 namespace dungeonRPG.Themes;
 
 public class JungleMazeThemeFactory : IThemeFactory
 {
+    private readonly ISpeciesSubject _minotaurNetwork = new SpeciesNetwork();
+    private readonly ISpeciesSubject _snakeNetwork = new SpeciesNetwork();
+    private readonly ISpeciesSubject _spiderNetwork = new SpeciesNetwork();
     public string GetMessage()
     {
         return
@@ -22,7 +27,7 @@ public class JungleMazeThemeFactory : IThemeFactory
     public Enemy GetRandomEnemy(Random random)
     {
         int roll = random.Next(0, 3);
-        return roll switch {0 => new Minotaur(), 1 => new Snake(), _ => new GiantSpider()};
+        return roll switch {0 => new Minotaur(_minotaurNetwork), 1 => new Snake(_snakeNetwork), _ => new GiantSpider(_spiderNetwork)};
     }
 
     public Weapon GetRandomWeapon(Random random)

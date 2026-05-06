@@ -13,4 +13,5 @@ public interface IItem
     void PickUp(Player player);
     void Use(Player player, Room room);
     string GetDescription();
+    public int GetNoiseRange() => 0;
 }

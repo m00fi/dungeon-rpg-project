@@ -46,6 +46,7 @@ public class CombatInputHandler : BaseInputHandler
 
             if (player.ActiveEnemy.IsDead)
             {
+                player.ActiveEnemy.Die();
                 room.GetCell(player.X, player.Y).Enemy = null;
                 player.ActiveEnemy = null;
                 resultMessage += " You won the battle!";

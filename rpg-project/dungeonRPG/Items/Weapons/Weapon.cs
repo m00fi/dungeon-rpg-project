@@ -1,6 +1,7 @@
 using dungeonRPG.Combat;
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities.Modules;
+using dungeonRPG.Items.Weapons.WeaponCategories;
 
 namespace dungeonRPG.Items.Weapons;
 
@@ -46,5 +47,16 @@ public abstract class Weapon : IItem
     public virtual string GetDescription()
     {
         return $"({Symbol}) {Name} (Damage: {Damage})";
+    }
+
+    public virtual int GetNoiseRange()
+    {
+        return this switch
+        {
+            IHeavyWeapon => 14,
+            IMagicWeapon => 9,
+            ILightWeapon => 5,
+            _ => 0
+        };
     }
 }

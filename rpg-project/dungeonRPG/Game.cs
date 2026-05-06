@@ -91,6 +91,9 @@ public class Game
 
                 var key = Console.ReadKey(intercept: true).Key;
                 var result = _inputHandler.HandleInput(key, _player, _room, _activeKeys);
+                
+                bool isMovementAttempt = key == ConsoleKey.W || key == ConsoleKey.A ||
+                                         key == ConsoleKey.S || key == ConsoleKey.D;
 
                 if (result.ExitGame)
                     return;
@@ -99,6 +102,9 @@ public class Game
                 {
                     currentMessage = result.Message;
                 }
+                
+                if(isMovementAttempt)
+                    _room.MoveEnemies(_player);
             }
         }
         finally

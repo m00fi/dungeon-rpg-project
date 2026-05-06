@@ -1,6 +1,7 @@
 using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items;
 using dungeonRPG.Logging;
+using dungeonRPG.Systems.Acoustics;
 
 namespace dungeonRPG.Entities;
 using Dungeon;
@@ -74,7 +75,9 @@ public class Player
         {
             item.PickUp(this);
             GameLogger.Log($"Player picked up {item.Name}.");
-            
+
+            EmitItemSound(item, room);
+
             if (SelectedItemIndex >= currCell.GetItemsCount() && SelectedItemIndex > 0)
             {
                 SelectedItemIndex--;
@@ -96,6 +99,8 @@ public class Player
             Cell currCell = room.GetCell(X, Y);
             currCell.TryAddItem(itemToDrop);
             
+            EmitItemSound(itemToDrop, room);
+            
             if (SelectedInventoryIndex >= inventory.Items.Count && SelectedInventoryIndex > 0)
             {
                 SelectedInventoryIndex--;
@@ -103,6 +108,14 @@ public class Player
         }
 
         return null;
+    }
+
+    private void EmitItemSound(IItem item, Room room)
+    {
+        int range = item.GetNoiseRange();
+        if (range <= 0) return;
+
+        DungeonAcoustics.EmitSound(X, Y, range, item.Name, room);
     }
     
     public void ToggleInventory()

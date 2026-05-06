@@ -379,7 +379,11 @@ public class DefaultDungeonBuilder : IDungeonBuilder
             if (_grid[y, x].CanHoldItems && _grid[y, x].Enemy == null)
             {
                 var newEnemy = _theme.GetRandomEnemy(_random);
-                _grid[y, x].Enemy = newEnemy; 
+                _grid[y, x].Enemy = newEnemy;
+                
+                newEnemy.X = x;
+                newEnemy.Y = y;
+                
                 placed++;
             }
             safetyNet++;
