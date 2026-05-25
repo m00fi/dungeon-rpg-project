@@ -119,6 +119,7 @@ public class GameServer
         {
             var (spawnX, spawnY) = FindSpawnPoint();
             var player = new Player($"Player{clientId}", spawnX, spawnY);
+            player.Symbol = (char)('0' + clientId);
             _players[clientId] = player;
         }
 
@@ -132,7 +133,7 @@ public class GameServer
         await writer.WriteLineAsync(JsonSerializer.Serialize(welcome));
 
         GameLogger.Log($"Player {clientId} connected.");
-        await BroadcastAsync(null);
+        await BroadcastAsync();
 
         try
         {
@@ -157,7 +158,7 @@ public class GameServer
                 if (message != null)
                     GameLogger.Log(message);
 
-                await BroadcastAsync(message);
+                await BroadcastAsync(message, clientId);
             }
         }
         catch (Exception ex) when (ex is IOException or ObjectDisposedException)
@@ -172,7 +173,12 @@ public class GameServer
 
     private async Task DisconnectClientAsync(int clientId, StreamWriter writer, StreamReader reader, TcpClient tcpClient)
     {
-        lock (_modelLock) { _players.Remove(clientId); }
+        lock (_modelLock)
+        {
+            if (_players.TryGetValue(clientId, out var p))
+                p.Disconnect();
+            _players.Remove(clientId);
+        }
         lock (_clientsLock)
         {
             _writers.Remove(clientId);
@@ -184,25 +190,32 @@ public class GameServer
         try { tcpClient.Close(); } catch { /* ignore */ }
 
         GameLogger.Log($"Player {clientId} disconnected.");
-        await BroadcastAsync(null);
+        await BroadcastAsync();
     }
 
     // -------------------------------------------------------------------------
     // State broadcast
     // -------------------------------------------------------------------------
 
-    private async Task BroadcastAsync(string? currentMessage)
+    private async Task BroadcastAsync(string? actionMessage = null, int actingClientId = -1)
     {
-        GameStateDto state;
-        lock (_modelLock) { state = BuildGameStateDto(currentMessage); }
+        GameStateDto baseState;
+        lock (_modelLock) { baseState = BuildGameStateDto(null); }
+        string jsonForOthers = JsonSerializer.Serialize(baseState);
 
-        string json = JsonSerializer.Serialize(state);
+        string jsonForActing = jsonForOthers;
+        if (actingClientId != -1 && actionMessage != null)
+        {
+            baseState.CurrentMessage = actionMessage;
+            jsonForActing = JsonSerializer.Serialize(baseState);
+        }
 
         List<(int id, StreamWriter writer)> targets;
         lock (_clientsLock) { targets = _writers.Select(kv => (kv.Key, kv.Value)).ToList(); }
 
         await Task.WhenAll(targets.Select(async t =>
         {
+            string json = t.id == actingClientId ? jsonForActing : jsonForOthers;
             try { await t.writer.WriteLineAsync(json); }
             catch { /* dead connection — will clean up in its own task */ }
         }));
@@ -222,7 +235,10 @@ public class GameServer
         bool isMovement = action.Action is PlayerActionType.MoveUp or PlayerActionType.MoveDown
                                         or PlayerActionType.MoveLeft or PlayerActionType.MoveRight;
         if (isMovement)
+        {
             _room.MoveEnemies(player);
+            player.Symbol = (char)('0' + clientId);
+        }
 
         return result.Message;
     }

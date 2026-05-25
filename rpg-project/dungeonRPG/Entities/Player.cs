@@ -2,13 +2,14 @@ using dungeonRPG.Entities.Enemies;
 using dungeonRPG.Items;
 using dungeonRPG.Logging;
 using dungeonRPG.Systems.Acoustics;
+using dungeonRPG.Systems.Pathfinding;
 
 namespace dungeonRPG.Entities;
 using Dungeon;
 using Dungeon.Cells;
 using Modules;
 
-public class Player
+public class Player : IAcousticObserver
 {
     public string Name { get; private set; }
     public char Symbol { get; set; }
@@ -38,6 +39,7 @@ public class Player
         Y = startY;
 
         stats = new Attribute(equipment);
+        DungeonAcoustics.Subscribe(this);
     }
 
     public void Move(int dx, int dy)
@@ -182,6 +184,22 @@ public class Player
         return null;
     }
     
+    public void OnSoundEmitted(int originX, int originY, int range, string sourceName, Room currentRoom)
+    {
+        if (originX == X && originY == Y) return;
+
+        int distance = Pathfinder.CalculateNoiseDistance(X, Y, originX, originY, currentRoom);
+        if (distance != -1 && distance <= range)
+        {
+            GameLogger.Log($"[NOISE] {Name} at ({X},{Y}) heard {sourceName} from {distance} steps away!");
+        }
+    }
+
+    public void Disconnect()
+    {
+        DungeonAcoustics.Unsubscribe(this);
+    }
+
     public string? TryUnequipAll(Room room)
     {
         var unequippedWeapons = equipment.UnequipAll();
