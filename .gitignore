@@ -21,4 +21,6 @@ project.lock.json
 
 Unused/
 *.log
+CLAUDE.md
+STRUCTURE.md
 
