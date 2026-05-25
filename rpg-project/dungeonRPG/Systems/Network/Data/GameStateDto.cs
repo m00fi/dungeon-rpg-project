@@ -8,6 +8,9 @@ public class GameStateDto
     // All connected players keyed by slot id (1-9)
     public Dictionary<int, PlayerInfoDto> Players { get; set; } = new();
 
+    // Transient message from the last action result (shown in message bar)
+    public string? CurrentMessage { get; set; }
+
     // Recent entries from MemoryLogger for the event log panel
     public List<string> RecentLogs { get; set; } = new();
 
