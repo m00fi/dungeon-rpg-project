@@ -77,15 +77,63 @@ public class GameServer
 
     public async Task StartAsync()
     {
+        using var cts = new CancellationTokenSource();
+
         _listener.Start();
         Console.CursorVisible = false;
-        Console.WriteLine($"Server listening. Waiting for up to {MaxPlayers} players...");
+        Console.WriteLine($"Server listening. Waiting for up to {MaxPlayers} players... [ESC to stop]");
         GameLogger.Log("Server started.");
 
-        while (true)
+        _ = Task.Run(() =>
         {
-            var tcpClient = await _listener.AcceptTcpClientAsync();
-            _ = Task.Run(() => HandleNewClientAsync(tcpClient));
+            while (!cts.IsCancellationRequested)
+            {
+                if (Console.KeyAvailable && Console.ReadKey(intercept: true).Key == ConsoleKey.Escape)
+                {
+                    cts.Cancel();
+                    return;
+                }
+                Thread.Sleep(50);
+            }
+        });
+
+        try
+        {
+            while (!cts.IsCancellationRequested)
+            {
+                var tcpClient = await _listener.AcceptTcpClientAsync(cts.Token);
+                _ = Task.Run(() => HandleNewClientAsync(tcpClient));
+            }
+        }
+        catch (OperationCanceledException) { }
+        finally
+        {
+            _listener.Stop();
+            ShutdownAllClients();
+            Console.Clear();
+            Console.CursorVisible = true;
+            GameLogger.Log("Server stopped.");
+        }
+    }
+
+    private void ShutdownAllClients()
+    {
+        List<StreamWriter> writers;
+        lock (_clientsLock)
+        {
+            writers = _writers.Values.ToList();
+            _writers.Clear();
+            _usedIds.Clear();
+        }
+
+        foreach (var w in writers)
+            try { w.Dispose(); } catch { }
+
+        lock (_modelLock)
+        {
+            foreach (var p in _players.Values)
+                p.Disconnect();
+            _players.Clear();
         }
     }
 
@@ -157,8 +205,8 @@ public class GameServer
                     message = ApplyAction(clientId, action);
                 }
 
-                if (message != null)
-                    GameLogger.Log(message);
+                // if (message != null)
+                //     GameLogger.Log(message);
 
                 await BroadcastAsync(message, clientId);
             }
