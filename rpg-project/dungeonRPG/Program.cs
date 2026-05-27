@@ -34,10 +34,6 @@ else
     await RunInteractiveMenuAsync();
 }
 
-// -------------------------------------------------------------------------
-// Helpers
-// -------------------------------------------------------------------------
-
 static GameConfig InitializeLogging()
 {
     var config = new GameConfig();

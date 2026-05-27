@@ -43,8 +43,7 @@ public class GameClient
             NewLine = "\n"
         };
         var reader = new StreamReader(stream, Encoding.UTF8, leaveOpen: true);
-
-        // First packet is always WelcomeDto — tells us our player slot
+        
         string? welcomeLine = await reader.ReadLineAsync();
         if (welcomeLine == null) return;
 
@@ -79,19 +78,15 @@ public class GameClient
         finally
         {
             cts.Cancel();
-            try { tcpClient.Close(); } catch { /* ignore */ }
-            try { writer.Dispose(); } catch { /* ignore */ }
-            try { reader.Dispose(); } catch { /* ignore */ }
+            try { tcpClient.Close(); } catch { /**/ }
+            try { writer.Dispose(); } catch { /**/ }
+            try { reader.Dispose(); } catch { /**/ }
             Console.CursorVisible = true;
             Console.Clear();
         }
 
         await receiveTask;
     }
-
-    // -------------------------------------------------------------------------
-    // Background receive loop
-    // -------------------------------------------------------------------------
 
     private async Task ReceiveStateAsync(StreamReader reader, CancellationToken ct)
     {
@@ -114,7 +109,7 @@ public class GameClient
                 }
             }
         }
-        catch (OperationCanceledException) { /* normal shutdown */ }
-        catch (Exception ex) when (ex is IOException or ObjectDisposedException) { /* server closed */ }
+        catch (OperationCanceledException) { /**/ }
+        catch (Exception ex) when (ex is IOException or ObjectDisposedException) { /**/ }
     }
 }

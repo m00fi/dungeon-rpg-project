@@ -21,16 +21,13 @@ public class GameServer
     private readonly Room _room;
     private readonly List<string> _instructions;
 
-    // Game model — every read/write guarded by _modelLock
     private readonly Dictionary<int, Player> _players = new();
     private static readonly object _modelLock = new();
 
-    // Network layer — every read/write guarded by _clientsLock
     private readonly Dictionary<int, StreamWriter> _writers = new();
     private readonly HashSet<int> _usedIds = new();
     private readonly object _clientsLock = new();
 
-    // Input handling — Chain of Responsibility reused from /Input/
     private readonly IInputHandler _inputHandler;
     private readonly List<ConsoleKey> _activeKeys;
 
@@ -146,10 +143,6 @@ public class GameServer
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Connection lifecycle
-    // -------------------------------------------------------------------------
-
     private async Task HandleNewClientAsync(TcpClient tcpClient)
     {
         int clientId;
@@ -187,7 +180,6 @@ public class GameServer
             _writers[clientId] = writer;
         }
 
-        // Tell this client its assigned player slot before the first broadcast
         var welcome = new WelcomeDto { PlayerId = clientId };
         await writer.WriteLineAsync(JsonSerializer.Serialize(welcome));
 
@@ -220,10 +212,7 @@ public class GameServer
                 await BroadcastAsync(message, clientId);
             }
         }
-        catch (Exception ex) when (ex is IOException or ObjectDisposedException)
-        {
-            // Normal disconnect path
-        }
+        catch (Exception ex) when (ex is IOException or ObjectDisposedException) {}
         finally
         {
             await DisconnectClientAsync(clientId, writer, reader, tcpClient);
@@ -248,17 +237,13 @@ public class GameServer
             _usedIds.Remove(clientId);
         }
 
-        try { writer.Dispose(); } catch { /* ignore */ }
-        try { reader.Dispose(); } catch { /* ignore */ }
-        try { tcpClient.Close(); } catch { /* ignore */ }
+        try { writer.Dispose(); } catch { /**/ }
+        try { reader.Dispose(); } catch { /**/ }
+        try { tcpClient.Close(); } catch { /**/ }
 
         GameLogger.Log($"{disconnectedName} disconnected.");
         await BroadcastAsync();
     }
-
-    // -------------------------------------------------------------------------
-    // State broadcast
-    // -------------------------------------------------------------------------
 
     private async Task BroadcastAsync(string? actionMessage = null, int actingClientId = -1)
     {
@@ -280,14 +265,9 @@ public class GameServer
         {
             string json = t.id == actingClientId ? jsonForActing : jsonForOthers;
             try { await t.writer.WriteLineAsync(json); }
-            catch { /* dead connection — will clean up in its own task */ }
+            catch { /**/ }
         }));
     }
-
-    // -------------------------------------------------------------------------
-    // Action processing  (must be called under _modelLock)
-    // -------------------------------------------------------------------------
-
     private string? ApplyAction(int clientId, PlayerActionDto action)
     {
         if (!_players.TryGetValue(clientId, out var player)) return null;
@@ -305,11 +285,6 @@ public class GameServer
 
         return result.Message;
     }
-
-    // -------------------------------------------------------------------------
-    // State snapshot  (must be called under _modelLock)
-    // -------------------------------------------------------------------------
-
     private GameStateDto BuildGameStateDto(string? currentMessage)
     {
         var mapRows = new string[Room.Height];
@@ -335,7 +310,6 @@ public class GameServer
             Instructions = _instructions
         };
     }
-
     private PlayerInfoDto BuildPlayerInfoDto(int id, Player player)
     {
         var cell = _room.GetCell(player.X, player.Y);
@@ -369,21 +343,14 @@ public class GameServer
             } : null
         };
     }
-
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
     private int AllocateId()
     {
         for (int i = 1; i <= MaxPlayers; i++)
             if (!_usedIds.Contains(i)) return i;
         return -1;
     }
-
     private (int x, int y) FindSpawnPoint()
     {
-        // Called under _modelLock
         var occupied = _players.Values.Select(p => (p.X, p.Y)).ToHashSet();
         for (int y = 0; y < Room.Height; y++)
             for (int x = 0; x < Room.Width; x++)
