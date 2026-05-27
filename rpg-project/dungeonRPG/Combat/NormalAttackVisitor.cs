@@ -57,8 +57,8 @@ public class NormalAttackVisitor : IAttackVisitor
         if (_enemy.IsDead)
         {
             CombatMessage = $"Normal Attack! You dealt {actualDamageToEnemy} DMG. {_enemy.Name} defeated!";
-            GameLogger.Log($"Player dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
-            GameLogger.Log($"Player defeated {_enemy.Name}.");
+            GameLogger.Log($"{_player.Name} dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
+            GameLogger.Log($"{_player.Name} defeated {_enemy.Name}.");
             return;
         }
 
@@ -66,7 +66,7 @@ public class NormalAttackVisitor : IAttackVisitor
         _player.stats.Health -= actualDamageToPlayer;
 
         CombatMessage = $"Normal Attack! You dealt {actualDamageToEnemy} DMG. Received {actualDamageToPlayer} DMG!";
-        GameLogger.Log($"Player dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
-        GameLogger.Log($"Player received {actualDamageToPlayer} DMG from {_enemy.Name}.");
+        GameLogger.Log($"{_player.Name} dealt {actualDamageToEnemy} DMG to {_enemy.Name}.");
+        GameLogger.Log($"{_player.Name} received {actualDamageToPlayer} DMG from {_enemy.Name}.");
     }
 }

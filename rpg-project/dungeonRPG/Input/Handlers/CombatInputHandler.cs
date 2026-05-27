@@ -53,7 +53,7 @@ public class CombatInputHandler : BaseInputHandler
             }
             else if (player.stats.Health <= 0)
             {
-                GameLogger.Log("Player died.");
+                GameLogger.Log($"{player.Name} died.");
                 string fileName = GameLogger.CurrentLogFilePath ?? "unknown";
                 return new InputResult(false, $"YOU DIED! GAME OVER. Logs saved to: {fileName}. Press [ESC] to quit.");
             }

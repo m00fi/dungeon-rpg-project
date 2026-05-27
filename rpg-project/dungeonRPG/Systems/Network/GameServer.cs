@@ -115,12 +115,14 @@ public class GameServer
         };
         var reader = new StreamReader(stream, Encoding.UTF8, leaveOpen: true);
 
+        string playerName;
         lock (_modelLock)
         {
             var (spawnX, spawnY) = FindSpawnPoint();
             var player = new Player($"Player{clientId}", spawnX, spawnY);
             player.Symbol = (char)('0' + clientId);
             _players[clientId] = player;
+            playerName = player.Name;
         }
 
         lock (_clientsLock)
@@ -132,7 +134,7 @@ public class GameServer
         var welcome = new WelcomeDto { PlayerId = clientId };
         await writer.WriteLineAsync(JsonSerializer.Serialize(welcome));
 
-        GameLogger.Log($"Player {clientId} connected.");
+        GameLogger.Log($"{playerName} connected.");
         await BroadcastAsync();
 
         try
@@ -173,10 +175,14 @@ public class GameServer
 
     private async Task DisconnectClientAsync(int clientId, StreamWriter writer, StreamReader reader, TcpClient tcpClient)
     {
+        string disconnectedName = $"Player{clientId}";
         lock (_modelLock)
         {
             if (_players.TryGetValue(clientId, out var p))
+            {
+                disconnectedName = p.Name;
                 p.Disconnect();
+            }
             _players.Remove(clientId);
         }
         lock (_clientsLock)
@@ -189,7 +195,7 @@ public class GameServer
         try { reader.Dispose(); } catch { /* ignore */ }
         try { tcpClient.Close(); } catch { /* ignore */ }
 
-        GameLogger.Log($"Player {clientId} disconnected.");
+        GameLogger.Log($"{disconnectedName} disconnected.");
         await BroadcastAsync();
     }
 

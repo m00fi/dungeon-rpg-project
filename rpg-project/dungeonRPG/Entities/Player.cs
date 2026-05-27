@@ -76,7 +76,7 @@ public class Player : IAcousticObserver
         if (item != null)
         {
             item.PickUp(this);
-            GameLogger.Log($"Player picked up {item.Name}.");
+            GameLogger.Log($"{Name} picked up {item.Name}.");
 
             EmitItemSound(item, room);
 

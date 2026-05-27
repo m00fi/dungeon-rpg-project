@@ -2,6 +2,7 @@ using dungeonRPG.Combat;
 using dungeonRPG.Dungeon;
 using dungeonRPG.Entities.Modules;
 using dungeonRPG.Items.Weapons.WeaponCategories;
+using dungeonRPG.Logging;
 
 namespace dungeonRPG.Items.Weapons;
 
@@ -31,6 +32,7 @@ public abstract class Weapon : IItem
     {
         player.inventory.Remove(this);
         List<Weapon> unequippedWeapons = EquipTo(player.equipment, this);
+        GameLogger.Log($"{player.Name} equipped {this.Name}.");
 
         foreach (var oldWeapon in unequippedWeapons)
         {

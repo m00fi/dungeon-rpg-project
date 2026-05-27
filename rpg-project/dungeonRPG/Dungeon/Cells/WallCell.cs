@@ -9,7 +9,7 @@ public class WallCell : Cell
 
     public override bool Enter(Player player)
     {
-        GameLogger.Log("Player bumps into a wall.");
+        GameLogger.Log($"{player.Name} bumps into a wall.");
         return false;
     }
 }

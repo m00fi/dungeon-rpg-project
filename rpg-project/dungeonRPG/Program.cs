@@ -15,6 +15,7 @@ if (args.Length >= 1)
             int port = args.Length >= 2 && int.TryParse(args[1], out int p) ? p : 5555;
             InitializeLogging();
             var theme = new DungeonSelectionMenu().Display();
+            Console.Clear();
             await new GameServer(theme, port).StartAsync();
             break;
         }
@@ -66,7 +67,6 @@ static async Task RunInteractiveMenuAsync()
     Console.WriteLine("  [2] Join a game  (client)");
     Console.WriteLine("  [3] Play locally");
     Console.WriteLine();
-    Console.Write("  Choice: ");
 
     var key = Console.ReadKey(intercept: true).Key;
 

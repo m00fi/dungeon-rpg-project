@@ -8,7 +8,7 @@ public class UnboundKeyHandler : BaseInputHandler
 {
     public override InputResult HandleInput(ConsoleKey key, Player player, Room room, List<ConsoleKey> activeKeys)
     {
-        GameLogger.Log("Player pressed an unbound key.");
+        GameLogger.Log($"{player.Name} pressed an unbound key.");
         return new InputResult(false, "Unknown command!");
     }
 }
