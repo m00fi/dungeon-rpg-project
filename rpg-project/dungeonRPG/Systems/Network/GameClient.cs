@@ -25,7 +25,16 @@ public class GameClient
     public async Task ConnectAndRunAsync()
     {
         using var tcpClient = new TcpClient();
-        await tcpClient.ConnectAsync(_serverIp, _serverPort);
+        try
+        {
+            await tcpClient.ConnectAsync(_serverIp, _serverPort);
+        }            
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to connect to server at {_serverIp}:{_serverPort} - {ex.Message}");
+            Console.CursorVisible = true;
+            return;
+        }
 
         var stream = tcpClient.GetStream();
         var writer = new StreamWriter(stream, Encoding.UTF8, leaveOpen: true)

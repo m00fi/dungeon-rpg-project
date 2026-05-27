@@ -83,6 +83,8 @@ public class ConsoleView : IGameView
                 {
                     if (playerAtCell.Id == localPlayerId)
                         Console.ForegroundColor = ConsoleColor.Yellow;
+                    else
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write(playerAtCell.Symbol);
                     Console.ResetColor();
                 }

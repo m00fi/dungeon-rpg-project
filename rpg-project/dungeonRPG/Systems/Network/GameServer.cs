@@ -79,7 +79,16 @@ public class GameServer
     {
         using var cts = new CancellationTokenSource();
 
-        _listener.Start();
+        try
+        {
+            _listener.Start();
+        }
+        catch
+        {
+            Console.WriteLine("Failed to start the server. (Address already in use).");
+            Console.CursorVisible = true;
+            return;
+        }
         Console.CursorVisible = false;
         Console.WriteLine($"Server listening. Waiting for up to {MaxPlayers} players... [ESC to stop]");
         GameLogger.Log("Server started.");
