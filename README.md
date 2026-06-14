@@ -62,8 +62,8 @@ Key features:
 ## Getting Started
 
 ```bash
-git clone https://github.com/m00fi/object-oriented-design-project.git
-cd object-oriented-design-project/rpg-project
+git clone https://github.com/m00fi/dungeon-rpg-project.git
+cd dungeon-rpg-project/rpg-project
 dotnet run
 ```
 
@@ -72,7 +72,7 @@ Before running, you can customise `game_settings.json`:
 ```json
 {
   "PlayerName": "Hero",
-  "LogFilePath": "logs/game.log"
+  "LogFilePath": "Logs"
 }
 ```
 
