@@ -102,7 +102,7 @@ Moving onto a tile occupied by an enemy initiates combat and prompts for an atta
 
 ## Gameplay
 
-![Gameplay screenshot](./screenshots/gameplay1.png)
+![Gameplay screenshot](./screenshots/gameplay2.png)
 
 ![Battle screenshot](./screenshots/battle1.png)
 
